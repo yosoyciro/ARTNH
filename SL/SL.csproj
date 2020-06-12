@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E58D0CC5-7AEB-4FE3-9F3A-2297C285B6FE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SL</RootNamespace>
+    <AssemblyName>SL</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\..\Resources\NHibernate\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\..\Resources\NHibernate\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\Resources\NHibernate\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\..\Resources\NHibernate\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="GenerarSesion.cs" />
+    <Compile Include="MapAfiliadoCtaCte.cs" />
+    <Compile Include="MapAfiliadoDatos.cs" />
+    <Compile Include="MapDenuncia.cs" />
+    <Compile Include="Mapeos\ConsultaReclamo\MapRefReclamoConsulta.cs" />
+    <Compile Include="Mapeos\ConsultaReclamo\MapRefReclamoConsultaContacto.cs" />
+    <Compile Include="Mapeos\ConsultaReclamo\MapRefReclamoConsultaDetalle.cs" />
+    <Compile Include="Mapeos\ConsultaReclamo\MapRefReclamoConsultaMedio.cs" />
+    <Compile Include="Mapeos\ConsultaReclamo\MapRefReclamoConsultaResponder.cs" />
+    <Compile Include="Mapeos\FormulariosRAR\MapFormulariosRAR.cs" />
+    <Compile Include="Mapeos\FormulariosRAR\MapFormulariosRARDetalle.cs" />
+    <Compile Include="Mapeos\FormulariosRAR\MapFormulariosRARDetalleAgentes.cs" />
+    <Compile Include="Mapeos\Formularios\MapCuestionario.cs" />
+    <Compile Include="Mapeos\Formularios\MapFormulario.cs" />
+    <Compile Include="Mapeos\Formularios\MapReferenteDatos.cs" />
+    <Compile Include="Mapeos\Formularios\MapRefEstablecimiento.cs" />
+    <Compile Include="Mapeos\Formularios\MapRespuestasContratista.cs" />
+    <Compile Include="Mapeos\Formularios\MapRespuestasCuestionario.cs" />
+    <Compile Include="Mapeos\Formularios\MapRespuestasFormulario.cs" />
+    <Compile Include="Mapeos\Formularios\MapRespuestasGremio.cs" />
+    <Compile Include="Mapeos\Formularios\MapRespuestasResponsable.cs" />
+    <Compile Include="Mapeos\Formularios\MapSeccion.cs" />
+    <Compile Include="Mapeos\ProveedoresCtaCte\MapCtaCteRetenciones.cs" />
+    <Compile Include="Mapeos\ProveedoresCtaCte\MapCtaCteTiposRetencion.cs" />
+    <Compile Include="Mapeos\ProveedoresCtaCte\MapCtaCteTiposPago.cs" />
+    <Compile Include="Mapeos\ProveedoresCtaCte\MapProveedorCuentaCorriente.cs" />
+    <Compile Include="Mapeos\ProveedoresCtaCte\MapCtaCtePagos.cs" />
+    <Compile Include="Mapeos\ProveedoresCtaCte\MapProveedores.cs" />
+    <Compile Include="Mapeos\Ref\MapRefAgenteCausante.cs" />
+    <Compile Include="Mapeos\Ref\MapSRTSVCCTSustancias.cs" />
+    <Compile Include="MapUsuarios.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config\hibernate.cfg.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\produccion.cfg.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BE\BE.csproj">
+      <Project>{7706b964-0254-4391-8d89-7e7c4d0b7e98}</Project>
+      <Name>BE</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

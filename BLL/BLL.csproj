@@ -45,10 +45,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\BE\BE\BE.csproj">
-      <Project>{7706b964-0254-4391-8d89-7e7c4d0b7e98}</Project>
-      <Name>BE</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PadronAFIP\PadronAFIP.csproj">
       <Project>{ff00a613-7f4a-4baf-b0e8-8706640000d3}</Project>
       <Name>PadronAFIP</Name>

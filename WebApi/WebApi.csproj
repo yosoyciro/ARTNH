@@ -298,25 +298,25 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\BE\BE\BE.csproj">
+    <ProjectReference Include="..\BE\BE.csproj">
       <Project>{7706b964-0254-4391-8d89-7e7c4d0b7e98}</Project>
       <Name>BE</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\DAL\DAL\DAL.csproj">
-      <Project>{79eba8f1-2746-4743-bf98-f4c288a5e4ff}</Project>
-      <Name>DAL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\SL\SL.csproj">
-      <Project>{e58d0cc5-7aeb-4fe3-9f3a-2297c285b6fe}</Project>
-      <Name>SL</Name>
     </ProjectReference>
     <ProjectReference Include="..\BLL\BLL.csproj">
       <Project>{7c939be7-cc73-42bc-8f41-cf3d5b1db537}</Project>
       <Name>BLL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DAL\DAL.csproj">
+      <Project>{79eba8f1-2746-4743-bf98-f4c288a5e4ff}</Project>
+      <Name>DAL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PadronAFIP\PadronAFIP.csproj">
       <Project>{ff00a613-7f4a-4baf-b0e8-8706640000d3}</Project>
       <Name>PadronAFIP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SL\SL.csproj">
+      <Project>{e58d0cc5-7aeb-4fe3-9f3a-2297c285b6fe}</Project>
+      <Name>SL</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
