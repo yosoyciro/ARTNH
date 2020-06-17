@@ -18,6 +18,7 @@ namespace BE.Formularios
         public virtual int Orden { get; set; }
         public virtual int Codigo { get; set; }
         public virtual string Pregunta { get; set; }
-        public virtual string Comentario { get; set; }        
+        public virtual string Comentario { get; set; }     
+        public virtual int BajaFecha { get; set; }
     }
 }

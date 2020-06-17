@@ -21,6 +21,11 @@ namespace SL
             Property(p => p.InternoRespuestaFormulario);
             Property(p => p.Legajo);
             Property(p => p.Nombre);
+            Property(p => p.EstadoAccion);
+            Property(p => p.EstadoFecha);
+            Property(p => p.EstadoSituacion);
+            Property(p => p.BajaMotivo);
+            Property(p => p.Renglon);
         }
     }
 }

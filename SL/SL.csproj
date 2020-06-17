@@ -73,6 +73,7 @@
     <Compile Include="Mapeos\Formularios\MapRespuestasContratista.cs" />
     <Compile Include="Mapeos\Formularios\MapRespuestasCuestionario.cs" />
     <Compile Include="Mapeos\Formularios\MapRespuestasFormulario.cs" />
+    <Compile Include="Mapeos\Formularios\MapRespuestasFormularioRel.cs" />
     <Compile Include="Mapeos\Formularios\MapRespuestasGremio.cs" />
     <Compile Include="Mapeos\Formularios\MapRespuestasResponsable.cs" />
     <Compile Include="Mapeos\Formularios\MapSeccion.cs" />

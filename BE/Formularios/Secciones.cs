@@ -20,6 +20,7 @@ namespace BE.Formularios
         public virtual string Comentario { get; set; }
         public virtual int Pagina { get; set; }
         public virtual byte Baja { get; set; }
+        public virtual string Planilla { get; set; }
 
     }
 }

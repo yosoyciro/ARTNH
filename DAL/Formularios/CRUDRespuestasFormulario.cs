@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,6 +46,7 @@ namespace DAL.Formularios
                     //Convertir la fecha normal en fecha clarion
                     DateTime fecha = Convert.ToDateTime(item.FechaRegularizacionNormal);
                     item.FechaRegularizacion = ConvertirFecha(fecha);
+                    item.EstadoFecha = ConvertirFecha(DateTime.Today);
 
                     var respuestaCuestionario = session.Get<BE.Formularios.RespuestasCuestionario>(item.Interno);
                     if (respuestaCuestionario == null)
@@ -57,6 +59,7 @@ namespace DAL.Formularios
                 foreach (var item in pRespuestasFormulario.RespuestasGremio)
                 {
                     item.InternoRespuestaFormulario = interno;
+                    item.EstadoFecha = ConvertirFecha(DateTime.Today);
 
                     var respuestaGremio = session.Get<BE.Formularios.RespuestasGremio>(item.Interno);
                     if (respuestaGremio == null)
@@ -69,6 +72,7 @@ namespace DAL.Formularios
                 foreach (var item in pRespuestasFormulario.RespuestasContratista)
                 {
                     item.InternoRespuestaFormulario = interno;
+                    item.EstadoFecha = ConvertirFecha(DateTime.Today);
 
                     var respuestaContratista = session.Get<BE.Formularios.RespuestasContratista>(item.Interno);
                     if (respuestaContratista == null)
@@ -81,6 +85,7 @@ namespace DAL.Formularios
                 foreach (var item in pRespuestasFormulario.RespuestasResponsable)
                 {
                     item.InternoRespuestaFormulario = interno;
+                    item.EstadoFecha = ConvertirFecha(DateTime.Today);
 
                     var respuestaResponsable = session.Get<BE.Formularios.RespuestasResponsable>(item.Interno);
                     if (respuestaResponsable == null)
@@ -88,9 +93,8 @@ namespace DAL.Formularios
                     else
                         session.Merge(item);
                 }
-
-                transaction.Commit();
                 session.Flush();
+                transaction.Commit();                
                 return interno;
             }
 
@@ -103,7 +107,7 @@ namespace DAL.Formularios
         #endregion
 
         #region TraerRespuestas
-        public BE.Formularios.RespuestasFormulario TraerRespuestas(int pInternoFormulario, int pInternoEstablecimiento)
+        public BE.Formularios.RespuestasFormulario TraerRespuestas(int pInternoRespuestasFormulario)
         {
             try
             {
@@ -111,7 +115,7 @@ namespace DAL.Formularios
                 session.Clear();
 
                 //RespuestasFormulario
-                BE.Formularios.RespuestasFormulario respuestasFormulario = session.Query<BE.Formularios.RespuestasFormulario>().Where(a => a.InternoFormulario == pInternoFormulario && a.InternoEstablecimiento == pInternoEstablecimiento).OrderByDescending(a => a.Interno).SingleOrDefault();
+                BE.Formularios.RespuestasFormulario respuestasFormulario = session.Get<BE.Formularios.RespuestasFormulario>(pInternoRespuestasFormulario);
 
 
                 //RespuestasCuestionario
@@ -149,6 +153,8 @@ namespace DAL.Formularios
         {
             try
             {
+                session.Clear();
+
                 //RespuestasFormulario
                 BE.Formularios.RespuestasFormulario respuestasFormulario = session.Get<BE.Formularios.RespuestasFormulario>(pInternoRespuestasFormulario);
 
@@ -184,6 +190,11 @@ namespace DAL.Formularios
         #endregion
 
         #region ConfirmarFormulario
+        /// <summary>
+        /// Metodo que confirma el formulario y ademas, compara las respuestas con el formulario original y pone los datos correspondientes en EstadoAccion=" ", EstadoFecha=Hoy
+        /// </summary>
+        /// <param name="pRespuestasFormulario"></param>
+        /// <returns></returns>
         public bool Confirmar(BE.Formularios.RespuestasFormulario pRespuestasFormulario)
         {
             bool ret = false;
@@ -195,8 +206,161 @@ namespace DAL.Formularios
                 pRespuestasFormulario.CompletadoFechaHora = DateTime.Now;
                 session.Merge(pRespuestasFormulario);
 
-                transaction.Commit();
+                //Busco si es una nueva presentación y voy controlando los cambios con el formulario original
+                BE.Formularios.RespuestasFormularioRel respuestasFormularioRel = session
+                    .Query<BE.Formularios.RespuestasFormularioRel>()
+                    .Where(r => r.InternoRespuestaFormularioNuevo == pRespuestasFormulario.Interno)
+                    .SingleOrDefault();
+                if (respuestasFormularioRel != null)
+                {
+                    #region RespuestasCuestionario
+                    //Hay una presentación anterior, vamos a buscar los datos
+                    //RespuestasCuestionario
+                    IEnumerable<BE.Formularios.RespuestasCuestionario> respuestasCuestionarioOriginal = session
+                        .Query<BE.Formularios.RespuestasCuestionario>()
+                        .Where(r => r.InternoRespuestaFormulario == respuestasFormularioRel.InternoRespuestaFormularioOriginal)
+                        .ToList();
+
+                    IEnumerable<BE.Formularios.RespuestasCuestionario> respuestasCuestionarioNuevo = session
+                        .Query<BE.Formularios.RespuestasCuestionario>()
+                        .Where(r => r.InternoRespuestaFormulario == respuestasFormularioRel.InternoRespuestaFormularioNuevo)
+                        .ToList();
+                    
+                    //Recorro los registros del nuevo formulario
+                    foreach (var item in respuestasCuestionarioNuevo)
+                    {
+                        //Busco en la info original
+                        BE.Formularios.RespuestasCuestionario respuestaOriginal = respuestasCuestionarioOriginal.
+                            FirstOrDefault(r => r.InternoCuestionario == item.InternoCuestionario && r.InternoRespuestaFormulario == respuestasFormularioRel.InternoRespuestaFormularioOriginal);
+
+                        if (respuestaOriginal.Respuesta != item.Respuesta)
+                        {
+                            item.EstadoAccion = "M";
+                            item.EstadoFecha = ConvertirFecha(DateTime.Today);
+                            session.Save(item);
+                        }                            
+                    }
+                    #endregion
+
+
+                    #region RespuestasGremio
+                    //RespuestasGremios
+                    IEnumerable<BE.Formularios.RespuestasGremio> respuestasGremioOriginal = session
+                        .Query<BE.Formularios.RespuestasGremio>()
+                        .Where(r => r.InternoRespuestaFormulario == respuestasFormularioRel.InternoRespuestaFormularioOriginal)
+                        .ToList();
+
+                    IEnumerable<BE.Formularios.RespuestasGremio> respuestasGremioNuevo = session
+                        .Query<BE.Formularios.RespuestasGremio>()
+                        .Where(r => r.InternoRespuestaFormulario == respuestasFormularioRel.InternoRespuestaFormularioNuevo)
+                        .ToList();
+
+                    //Recorro los registros del nuevo formulario
+                    foreach (var item in respuestasGremioNuevo)
+                    {
+                        //Busco en la info original
+                        BE.Formularios.RespuestasGremio respuestaGremioOriginal = respuestasGremioOriginal.
+                            FirstOrDefault(r => r.Renglon == item.Renglon && r.InternoRespuestaFormulario == respuestasFormularioRel.InternoRespuestaFormularioOriginal);
+
+                        if (respuestaGremioOriginal.Legajo != item.Legajo || respuestaGremioOriginal.Nombre != item.Nombre)
+                        {
+                            item.EstadoAccion = "M";
+                            item.EstadoSituacion = " ";
+                            item.EstadoFecha = ConvertirFecha(DateTime.Today);
+
+                            //Alta
+                            if (respuestaGremioOriginal.Legajo == 0 && item.Legajo != 0)
+                                item.EstadoAccion = "A";
+
+                            //Baja
+                            if (respuestaGremioOriginal.Legajo != 0 && item.Legajo == 0)
+                                item.EstadoAccion = "B";
+
+                            session.Save(item);
+                        }
+                    }
+                    #endregion
+
+                    #region RespuestasContratista
+                    //RespuestasContratistas
+                    IEnumerable<BE.Formularios.RespuestasContratista> respuestasContratistaOriginal = session
+                        .Query<BE.Formularios.RespuestasContratista>()
+                        .Where(r => r.InternoRespuestaFormulario == respuestasFormularioRel.InternoRespuestaFormularioOriginal)
+                        .ToList();
+
+                    IEnumerable<BE.Formularios.RespuestasContratista> respuestasContratistaNuevo = session
+                        .Query<BE.Formularios.RespuestasContratista>()
+                        .Where(r => r.InternoRespuestaFormulario == respuestasFormularioRel.InternoRespuestaFormularioNuevo)
+                        .ToList();
+
+                    //Recorro los registros del nuevo formulario
+                    foreach (var item in respuestasContratistaNuevo)
+                    {
+                        //Busco en la info original
+                        BE.Formularios.RespuestasContratista respuestaContratistaOriginal = respuestasContratistaOriginal.
+                            FirstOrDefault(r => r.Renglon == item.Renglon && r.InternoRespuestaFormulario == respuestasFormularioRel.InternoRespuestaFormularioOriginal);
+
+                        if (respuestaContratistaOriginal.CUIT != item.CUIT || respuestaContratistaOriginal.Contratista != item.Contratista)
+                        {
+                            item.EstadoAccion = "M";
+                            item.EstadoSituacion = " ";
+                            item.EstadoFecha = ConvertirFecha(DateTime.Today);
+
+                            //Alta
+                            if (respuestaContratistaOriginal.CUIT == 0 && item.CUIT != 0)
+                                item.EstadoAccion = "A";
+
+                            //Baja
+                            if (respuestaContratistaOriginal.CUIT != 0 && item.CUIT == 0)
+                                item.EstadoAccion = "B";
+
+                            session.Save(item);
+                        }
+                    }
+                    #endregion
+
+                    #region RespuestasResponsable
+                    //RespuestasResonsable
+                    IEnumerable<BE.Formularios.RespuestasResponsable> respuestasResponsableOriginal = session
+                        .Query<BE.Formularios.RespuestasResponsable>()
+                        .Where(r => r.InternoRespuestaFormulario == respuestasFormularioRel.InternoRespuestaFormularioOriginal)
+                        .ToList();
+
+                    IEnumerable<BE.Formularios.RespuestasResponsable> respuestasResponsableNuevo = session
+                        .Query<BE.Formularios.RespuestasResponsable>()
+                        .Where(r => r.InternoRespuestaFormulario == respuestasFormularioRel.InternoRespuestaFormularioNuevo)
+                        .ToList();
+
+                    //Recorro los registros del nuevo formulario
+                    foreach (var respuestaResponsableNueva in respuestasResponsableNuevo)
+                    {
+                        //Busco en la info original
+                        BE.Formularios.RespuestasResponsable respuestaResponsableOriginal = respuestasResponsableOriginal.
+                            FirstOrDefault(r => r.Renglon == respuestaResponsableNueva.Renglon && r.InternoRespuestaFormulario == respuestasFormularioRel.InternoRespuestaFormularioOriginal);
+
+                        if (respuestaResponsableOriginal.CUIT != respuestaResponsableNueva.CUIT || respuestaResponsableOriginal.Cargo != respuestaResponsableNueva.Cargo)
+                        {
+                            respuestaResponsableNueva.EstadoAccion = "M";
+                            respuestaResponsableNueva.EstadoSituacion = " ";
+                            respuestaResponsableNueva.EstadoFecha = ConvertirFecha(DateTime.Today);
+
+                            //Alta
+                            if (respuestaResponsableOriginal.CUIT == 0 && respuestaResponsableNueva.CUIT != 0)
+                                respuestaResponsableNueva.EstadoAccion = "A";
+
+                            //Baja
+                            if (respuestaResponsableOriginal.CUIT != 0 && respuestaResponsableNueva.CUIT == 0)
+                                respuestaResponsableNueva.EstadoAccion = "B";
+
+                            session.Save(respuestaResponsableNueva);
+                        }
+                    }
+
+                    #endregion
+                }
+
                 session.Flush();
+                transaction.Commit();                
 
                 return ret;
             }
@@ -242,6 +406,25 @@ namespace DAL.Formularios
             int FechaClarion = ((TimeSpan)(pFechaNormal - FechaBase.AddDays(-4))).Days;
             return FechaClarion;
         }
+
+        //[Pure]
+        /*private static IEnumerable<T> Replace<T>(this IEnumerable<T> source, T oldValue, T newValue, IEqualityComparer<T> comparer = null)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            comparer = comparer ?? EqualityComparer<T>.Default;
+
+            foreach (var item in source)
+            {
+                yield return
+                    comparer.Equals(item, oldValue)
+                        ? newValue
+                        : item;
+            }
+        }*/
         #endregion
 
         #region MetodoReplicar
@@ -251,86 +434,84 @@ namespace DAL.Formularios
         /// </summary>
         /// <param name="pRespuestasFormulario"></param>
         /// <returns></returns>
-        public BE.Formularios.RespuestasFormulario Replicar(int pInternoFormulario, int pInternoEstablecimiento)
+        public BE.Formularios.RespuestasFormulario Replicar(BE.Formularios.RespuestasFormulario pRespuestasFormulario)
         {
-            //RespuestasFormulario
-            BE.Formularios.RespuestasFormulario respuestaFormulario = session.Query<BE.Formularios.RespuestasFormulario>().Where(a => a.InternoFormulario == pInternoFormulario && a.InternoEstablecimiento == pInternoEstablecimiento).SingleOrDefault();
-
-            if (respuestaFormulario != null)
+            ITransaction transaction = session.BeginTransaction();
+            try
             {
-                ITransaction transaction = session.BeginTransaction();
-                try
+                //Nuevo RespuestasFormulario
+                var nuevaRespuestaFormulario = new BE.Formularios.RespuestasFormulario
                 {
+                    InternoFormulario = pRespuestasFormulario.InternoFormulario,
+                    InternoEstablecimiento = pRespuestasFormulario.InternoEstablecimiento,
+                    CreacionFechaHora = DateTime.Today,
+                    CompletadoFechaHora = Convert.ToDateTime("1800-01-01"),
+                    RespuestasCuestionario = pRespuestasFormulario.RespuestasCuestionario,
+                    RespuestasGremio = pRespuestasFormulario.RespuestasGremio,
+                    RespuestasContratista = pRespuestasFormulario.RespuestasContratista,
+                    RespuestasResponsable = pRespuestasFormulario.RespuestasResponsable
+                };
+                    
+                session.Save(nuevaRespuestaFormulario);
 
-                    var nuevaRespuestaFormulario = new BE.Formularios.RespuestasFormulario();
-                    nuevaRespuestaFormulario.InternoFormulario = pInternoFormulario;
-                    nuevaRespuestaFormulario.InternoEstablecimiento = pInternoEstablecimiento;
-                    nuevaRespuestaFormulario.CreacionFechaHora = DateTime.Today;
-                    nuevaRespuestaFormulario.CompletadoFechaHora = Convert.ToDateTime("1800-01-01");
-                    session.Save(nuevaRespuestaFormulario);
+                //RespuestasCuestionario
+                foreach (var item in nuevaRespuestaFormulario.RespuestasCuestionario)
+                {
+                    BE.Formularios.RespuestasCuestionario respuesta = session.Get<BE.Formularios.RespuestasCuestionario>(item.Interno);
+                    respuesta.InternoRespuestaFormulario = nuevaRespuestaFormulario.Interno;
 
-                    int interno = nuevaRespuestaFormulario.Interno;
-
-                    //RespuestasCuestionario
-                    List<BE.Formularios.RespuestasCuestionario> respuestasCuestionario = session.Query<BE.Formularios.RespuestasCuestionario>().Where(a => a.InternoRespuestaFormulario == respuestaFormulario.Interno).ToList();
-                    foreach (var item in respuestasCuestionario)
-                    {
-                        item.InternoRespuestaFormulario = interno;
-                        session.Save(item);
-                    }
-
-                    //RespuestasGremio
-                    List<BE.Formularios.RespuestasGremio> respuestasGremio = session.Query<BE.Formularios.RespuestasGremio>().Where(a => a.InternoRespuestaFormulario == respuestaFormulario.Interno).ToList();
-                    foreach (var item in respuestasGremio)
-                    {
-                        item.InternoRespuestaFormulario = interno;
-
-                        var respuestaGremio = session.Get<BE.Formularios.RespuestasGremio>(item.Interno);
-                        if (respuestaGremio == null)
-                            session.Save(item);
-                        else
-                            session.Merge(item);
-                    }
-
-
-                    //RespuestasContratista
-                    List<BE.Formularios.RespuestasContratista> respuestasContratista = session.Query<BE.Formularios.RespuestasContratista>().Where(a => a.InternoRespuestaFormulario == respuestaFormulario.Interno).ToList();
-                    foreach (var item in respuestasContratista)
-                    {
-                        item.InternoRespuestaFormulario = interno;
-
-                        var respuestaContratista = session.Get<BE.Formularios.RespuestasContratista>(item.Interno);
-                        if (respuestaContratista == null)
-                            session.Save(item);
-                        else
-                            session.Merge(item);
-                    }
-
-                    //RespuestasResponsables
-                    List<BE.Formularios.RespuestasResponsable> respuestasResponsable = session.Query<BE.Formularios.RespuestasResponsable>().Where(a => a.InternoRespuestaFormulario == respuestaFormulario.Interno).ToList();
-                    foreach (var item in respuestasResponsable)
-                    {
-                        item.InternoRespuestaFormulario = interno;
-
-                        var respuestaResponsable = session.Get<BE.Formularios.RespuestasResponsable>(item.Interno);
-                        if (respuestaResponsable == null)
-                            session.Save(item);
-                        else
-                            session.Merge(item);
-                    }
-
-                    transaction.Commit();
-                    session.Flush();
+                    session.Save(item);
                 }
-                
-                catch (Exception ex)
-                    {
-                        transaction.Rollback();
-                        throw ex;
-                    }
+
+                //RespuestasGremio
+                foreach (var item in nuevaRespuestaFormulario.RespuestasGremio)
+                {
+                    BE.Formularios.RespuestasGremio gremio = session.Get<BE.Formularios.RespuestasGremio>(item.Interno);
+                    gremio.InternoRespuestaFormulario = nuevaRespuestaFormulario.Interno;
+
+                    session.Save(item);                   
+                }
+
+                //RespuestasContratista
+                foreach (var item in nuevaRespuestaFormulario.RespuestasContratista)
+                {
+                    BE.Formularios.RespuestasContratista contratista = session.Get<BE.Formularios.RespuestasContratista>(item.Interno);
+                    contratista.InternoRespuestaFormulario = nuevaRespuestaFormulario.Interno;
+
+                    session.Save(item);
+                }
+
+                //RespuestasResponsables
+                foreach (var item in nuevaRespuestaFormulario.RespuestasResponsable)
+                {
+                    BE.Formularios.RespuestasResponsable responsable = session.Get<BE.Formularios.RespuestasResponsable>(item.Interno);
+                    responsable.InternoRespuestaFormulario = nuevaRespuestaFormulario.Interno;
+
+                    session.Save(item);
+                }
+
+
+                //RespuestasFormularioRel - Grabo la relación entre el formulario original y la nueva instancia
+                var respuestasFormularioRel = new BE.Formularios.RespuestasFormularioRel
+                {
+                    InternoRespuestaFormularioNuevo = nuevaRespuestaFormulario.Interno,
+                    InternoRespuestaFormularioOriginal = pRespuestasFormulario.Interno
+                };
+                session.Save(respuestasFormularioRel);
+
+                session.Flush();
+                transaction.Commit();
+
+                return nuevaRespuestaFormulario;
             }
-            return respuestaFormulario;
+                
+            catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+                       
         }
-        #endregion
-    }
+        #endregion        
+    }    
 }

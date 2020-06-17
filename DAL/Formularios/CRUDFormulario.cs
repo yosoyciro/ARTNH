@@ -36,22 +36,19 @@ namespace DAL.Formularios
 
         public List<BE.Formularios.Formularios> ListarDisponibles(int pInternoEstablecimiento)
         {
+            session.Clear();
             try
             {
                 List<BE.Formularios.RespuestasFormulario> respuestasFormularios = session.Query<BE.Formularios.RespuestasFormulario>()
                     .Where(a => a.InternoEstablecimiento == pInternoEstablecimiento)
+                    .OrderByDescending(p => p.CreacionFechaHora)
                     .ToList();
 
+                List<BE.Formularios.Formularios> formulariosSeleccion = new List<BE.Formularios.Formularios>();
                 List<BE.Formularios.Formularios> formulariosDisponibles = session.Query<BE.Formularios.Formularios>().ToList();
-                var formularios1 = formulariosDisponibles;
-
-                foreach (var item in formularios1)
+                foreach (var item in formulariosDisponibles)
                 {
-                    string descripcionOriginal = item.Descripcion;
-
-                    BE.Formularios.RespuestasFormulario respuestasFormularios1 = null;
-
-                    respuestasFormularios1 = respuestasFormularios.Find(form => form.InternoFormulario == item.Interno);
+                    BE.Formularios.RespuestasFormulario respuestasFormularios1 = respuestasFormularios.Find(form => form.InternoFormulario == item.Interno);
                     if (respuestasFormularios1 != null)
                         switch (respuestasFormularios1.CompletadoFechaHora.Year)
                         {
@@ -66,9 +63,11 @@ namespace DAL.Formularios
                     else
                         item.Estado = "(No generado)";
                     
+                    formulariosSeleccion.Add(item);
+                    
                 };
-
-                return formularios1.ToList();
+                //formulariosSeleccion.Sort(p => p.Descripcion);
+                return formulariosSeleccion.ToList();
             }
 
             catch (Exception ex)
@@ -76,5 +75,6 @@ namespace DAL.Formularios
                 throw ex;
             }
         }
+        
     }
 }

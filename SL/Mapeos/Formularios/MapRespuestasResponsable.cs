@@ -22,6 +22,11 @@ namespace SL
             Property(p => p.TituloHabilitante);
             Property(p => p.Matricula);
             Property(p => p.EntidadOtorganteTitulo);
+            Property(p => p.EstadoAccion);
+            Property(p => p.EstadoFecha);
+            Property(p => p.EstadoSituacion);
+            Property(p => p.BajaMotivo);
+            Property(p => p.Renglon);
         }
     }
 }

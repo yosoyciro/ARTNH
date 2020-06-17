@@ -22,7 +22,8 @@ namespace SL
             Property(p => p.Orden);
             Property(p => p.Codigo);
             Property(p => p.Pregunta);
-            Property(p => p.Comentario);            
+            Property(p => p.Comentario);
+            Property(p => p.BajaFecha);
         }
     }
 }

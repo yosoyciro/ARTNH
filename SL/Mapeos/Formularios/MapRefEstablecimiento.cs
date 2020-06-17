@@ -24,6 +24,11 @@ namespace SL
             Property(p => p.Nombre);
             Property(p => p.DomicilioCalle);
             Property(p => p.DomicilioNro);
+            Property(p => p.Superficie);
+            Property(p => p.CantTrabajadores);
+            Property(p => p.EstadoAccion);
+            Property(p => p.EstadoFecha);
+            Property(p => p.EstadoSituacion);
         }
     }
 }

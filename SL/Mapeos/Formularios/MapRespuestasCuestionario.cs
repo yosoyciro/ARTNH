@@ -27,6 +27,10 @@ namespace SL
             {
                 m.Formula("dbo.ClarionToDate(FechaRegularizacion)");
             });
+            Property(p => p.EstadoAccion);
+            Property(p => p.EstadoFecha);
+            Property(p => p.EstadoSituacion);
+            Property(p => p.BajaMotivo);
         }
     }
 }

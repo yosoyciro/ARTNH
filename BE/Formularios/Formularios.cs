@@ -18,5 +18,6 @@ namespace BE.Formularios
         public virtual byte CantidadContratistas { get; set; }
         public virtual byte CantidadResponsables { get; set; }
         public virtual string Estado { get; set; }
+        public virtual int Decreto { get; set; }
     }
 }

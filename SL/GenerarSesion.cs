@@ -149,6 +149,7 @@ namespace SL
                     mapper.AddMapping<MapFormulariosRARDetalle>();
                     mapper.AddMapping<MapFormulariosRARDetalleAgentes>();
                     mapper.AddMapping<MapRefAgenteCausante>();
+                    mapper.AddMapping<MapRespuestasFormularioRel>();
                     //mapper.AddMapping<MapUsuarios>();
                     #endregion
 

@@ -18,5 +18,11 @@ namespace BE.Formularios
         public virtual string Nombre { get; set; }
         public virtual string DomicilioCalle { get; set; }        
         public virtual string DomicilioNro { get; set; }
+        public virtual int Superficie { get; set; }
+        public virtual int CantTrabajadores { get; set; }
+        public virtual string EstadoAccion { get; set; }
+        public virtual int EstadoFecha { get; set; }
+        public virtual string EstadoSituacion { get; set; }
+        public virtual int BajaMotivo { get; set; }
     }
 }

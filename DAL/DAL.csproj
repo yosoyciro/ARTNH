@@ -88,6 +88,7 @@
     <Compile Include="FormRAR\CRUDFormulariosRARDetalle.cs" />
     <Compile Include="FormRAR\CRUDFormulariosRARDetalleAgentes.cs" />
     <Compile Include="FormRAR\FormulariosRARCargados.cs" />
+    <Compile Include="Formularios\CRUDRespuestasFormularioRel.cs" />
     <Compile Include="Formularios\FormulariosCargados.cs" />
     <Compile Include="Formularios\CRUDCuestionarios.cs" />
     <Compile Include="Formularios\CRUDFormulario.cs" />

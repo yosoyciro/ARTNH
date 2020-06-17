@@ -18,5 +18,9 @@ namespace BE.Formularios
         public virtual int FechaRegularizacion { get; set; }
         public virtual string Observaciones { get; set; }
         public virtual DateTime FechaRegularizacionNormal { get; set; }
+        public virtual string EstadoAccion { get; set; }
+        public virtual int EstadoFecha { get; set; }
+        public virtual string EstadoSituacion { get; set; }
+        public virtual int BajaMotivo { get; set; }
     }
 }

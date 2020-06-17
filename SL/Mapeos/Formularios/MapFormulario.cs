@@ -22,6 +22,7 @@ namespace SL
             Property(p => p.CantidadGremios);
             Property(p => p.CantidadContratistas);
             Property(p => p.CantidadResponsables);
+            Property(p => p.Decreto);
         }
     }
 }

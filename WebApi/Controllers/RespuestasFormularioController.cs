@@ -56,12 +56,12 @@ namespace WebApi.Controllers
 
         [HttpGet]
         [Route("TraerRespuestas")]
-        public IHttpActionResult TraerRespuestas(int pInternoFormulario, int pInternoEstablecimiento)
+        public IHttpActionResult TraerRespuestas(int pInternoRespuestasFormulario)
         {
             try
             {
                 //RespuestasFormulario
-                BE.Formularios.RespuestasFormulario respuestasFormulario = CRUDRespuestasFormulario.instancia.TraerRespuestas(pInternoFormulario, pInternoEstablecimiento);
+                BE.Formularios.RespuestasFormulario respuestasFormulario = CRUDRespuestasFormulario.instancia.TraerRespuestas(pInternoRespuestasFormulario);
                 if (respuestasFormulario != null)
                     return Content(HttpStatusCode.OK, respuestasFormulario);
 
@@ -113,9 +113,9 @@ namespace WebApi.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("ReplicarFormulario")]
-        public IHttpActionResult ReplicarFormulario(int pInternoFormulario, int pInternoEstablecimiento)
+        public IHttpActionResult ReplicarFormulario(RespuestasFormulario pRespuestasFormulario)
         {
             if (!ModelState.IsValid)
             {
@@ -124,7 +124,7 @@ namespace WebApi.Controllers
             try
             {
                 //RespuestasFormulario
-                RespuestasFormulario respuestasFormulario = CRUDRespuestasFormulario.instancia.Replicar(pInternoFormulario, pInternoEstablecimiento);
+                RespuestasFormulario respuestasFormulario = CRUDRespuestasFormulario.instancia.Replicar(pRespuestasFormulario);
                 return Content(HttpStatusCode.OK, respuestasFormulario);
             }
             catch (Exception ex)

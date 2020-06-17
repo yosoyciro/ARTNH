@@ -25,6 +25,7 @@ namespace SL
             Property(p => p.Comentario);
             Property(p => p.Pagina);
             Property(p => p.Baja);
+            Property(p => p.Planilla);
         }
     }
 }
