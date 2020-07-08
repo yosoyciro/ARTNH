@@ -46,5 +46,27 @@ namespace DAL.Formularios
                 throw ex;
             }
         }
+
+        public bool Actualizar(int pInternoEstablecimiento, BE.Formularios.RefEstablecimientoActualizar pRefEstablecimientoActualizar)
+        {
+            ITransaction transaction = session.BeginTransaction();
+            try
+            {
+                var establecimiento = session.Get<BE.Formularios.RefEstablecimiento>(pInternoEstablecimiento);
+                establecimiento.CantTrabajadores = pRefEstablecimientoActualizar.CantTrabajadores;
+                establecimiento.Superficie = pRefEstablecimientoActualizar.Superficie;
+
+                session.Merge(establecimiento);
+                session.Flush();
+                transaction.Commit();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw ex;
+            }
+        }
     }
 }

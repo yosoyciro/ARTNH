@@ -16,7 +16,8 @@ namespace BE.Formularios
         public virtual int InternoFormulario { get; set; }
         public virtual int InternoEstablecimiento { get; set; }
         public virtual DateTime CreacionFechaHora { get; set; }
-        public virtual DateTime CompletadoFechaHora { get; set; }
+        public virtual DateTime? CompletadoFechaHora { get; set; }
+        public virtual DateTime NotificacionFecha { get; set; }
         public virtual List<BE.Formularios.RespuestasCuestionario> RespuestasCuestionario { get; set; }
         public virtual List<RespuestasGremio> RespuestasGremio { get; set; }
         public virtual List<RespuestasContratista> RespuestasContratista { get; set; }

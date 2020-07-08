@@ -233,6 +233,7 @@ namespace DAL.Formularios
                         BE.Formularios.RespuestasCuestionario respuestaOriginal = respuestasCuestionarioOriginal.
                             FirstOrDefault(r => r.InternoCuestionario == item.InternoCuestionario && r.InternoRespuestaFormulario == respuestasFormularioRel.InternoRespuestaFormularioOriginal);
 
+                        item.EstadoAccion = "";
                         if (respuestaOriginal.Respuesta != item.Respuesta)
                         {
                             item.EstadoAccion = "M";
@@ -262,6 +263,7 @@ namespace DAL.Formularios
                         BE.Formularios.RespuestasGremio respuestaGremioOriginal = respuestasGremioOriginal.
                             FirstOrDefault(r => r.Renglon == item.Renglon && r.InternoRespuestaFormulario == respuestasFormularioRel.InternoRespuestaFormularioOriginal);
 
+                        item.EstadoAccion = "";
                         if (respuestaGremioOriginal.Legajo != item.Legajo || respuestaGremioOriginal.Nombre != item.Nombre)
                         {
                             item.EstadoAccion = "M";
@@ -300,6 +302,7 @@ namespace DAL.Formularios
                         BE.Formularios.RespuestasContratista respuestaContratistaOriginal = respuestasContratistaOriginal.
                             FirstOrDefault(r => r.Renglon == item.Renglon && r.InternoRespuestaFormulario == respuestasFormularioRel.InternoRespuestaFormularioOriginal);
 
+                        item.EstadoAccion = "";
                         if (respuestaContratistaOriginal.CUIT != item.CUIT || respuestaContratistaOriginal.Contratista != item.Contratista)
                         {
                             item.EstadoAccion = "M";
@@ -338,6 +341,7 @@ namespace DAL.Formularios
                         BE.Formularios.RespuestasResponsable respuestaResponsableOriginal = respuestasResponsableOriginal.
                             FirstOrDefault(r => r.Renglon == respuestaResponsableNueva.Renglon && r.InternoRespuestaFormulario == respuestasFormularioRel.InternoRespuestaFormularioOriginal);
 
+                        respuestaResponsableNueva.EstadoAccion = " ";
                         if (respuestaResponsableOriginal.CUIT != respuestaResponsableNueva.CUIT || respuestaResponsableOriginal.Cargo != respuestaResponsableNueva.Cargo)
                         {
                             respuestaResponsableNueva.EstadoAccion = "M";
@@ -445,11 +449,12 @@ namespace DAL.Formularios
                     InternoFormulario = pRespuestasFormulario.InternoFormulario,
                     InternoEstablecimiento = pRespuestasFormulario.InternoEstablecimiento,
                     CreacionFechaHora = DateTime.Today,
-                    CompletadoFechaHora = Convert.ToDateTime("1800-01-01"),
+                    CompletadoFechaHora = null, //Convert.ToDateTime("1800-01-01"),
                     RespuestasCuestionario = pRespuestasFormulario.RespuestasCuestionario,
                     RespuestasGremio = pRespuestasFormulario.RespuestasGremio,
                     RespuestasContratista = pRespuestasFormulario.RespuestasContratista,
-                    RespuestasResponsable = pRespuestasFormulario.RespuestasResponsable
+                    RespuestasResponsable = pRespuestasFormulario.RespuestasResponsable,
+                    NotificacionFecha = pRespuestasFormulario.NotificacionFecha
                 };
                     
                 session.Save(nuevaRespuestaFormulario);

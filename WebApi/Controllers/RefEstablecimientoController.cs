@@ -23,5 +23,27 @@ namespace WebApi.Controllers
         {
             return DAL.Formularios.CRUDRefEstablecimiento.instancia.ListarPorInterno(pInternoEstablecimiento);
         }
+
+        [HttpPut]
+        [Route("Actualizar")]
+        public IHttpActionResult Actualizar(int pInternoEstablecimiento, [FromBody] BE.Formularios.RefEstablecimientoActualizar pRefEstablecimientoActualizar)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Content(HttpStatusCode.BadRequest, ModelState); //BadRequest(ModelState);
+            }
+
+            try
+            {
+                DAL.Formularios.CRUDRefEstablecimiento.instancia.Actualizar(pInternoEstablecimiento, pRefEstablecimientoActualizar);
+
+                return Content(HttpStatusCode.OK, "Datos actualizados!");
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError, ex.InnerException.Message);
+            }
+            
+        }
     }
 }

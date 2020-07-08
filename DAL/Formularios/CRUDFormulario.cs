@@ -50,9 +50,9 @@ namespace DAL.Formularios
                 {
                     BE.Formularios.RespuestasFormulario respuestasFormularios1 = respuestasFormularios.Find(form => form.InternoFormulario == item.Interno);
                     if (respuestasFormularios1 != null)
-                        switch (respuestasFormularios1.CompletadoFechaHora.Year)
+                        switch (respuestasFormularios1.CompletadoFechaHora)
                         {
-                            case 1800:
+                            case null:
                                 item.Estado = "(En proceso de carga)";
                                 break;
 
