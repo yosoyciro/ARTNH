@@ -4,6 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BE.Formularios;
 using NHibernate;
 using NHibernate.Linq;
 using NHibernate.SqlCommand;
@@ -450,11 +451,11 @@ namespace DAL.Formularios
                     InternoEstablecimiento = pRespuestasFormulario.InternoEstablecimiento,
                     CreacionFechaHora = DateTime.Today,
                     CompletadoFechaHora = null, //Convert.ToDateTime("1800-01-01"),
+                    NotificacionFecha = pRespuestasFormulario.NotificacionFecha,
                     RespuestasCuestionario = pRespuestasFormulario.RespuestasCuestionario,
                     RespuestasGremio = pRespuestasFormulario.RespuestasGremio,
                     RespuestasContratista = pRespuestasFormulario.RespuestasContratista,
-                    RespuestasResponsable = pRespuestasFormulario.RespuestasResponsable,
-                    NotificacionFecha = pRespuestasFormulario.NotificacionFecha
+                    RespuestasResponsable = pRespuestasFormulario.RespuestasResponsable
                 };
                     
                 session.Save(nuevaRespuestaFormulario);
@@ -517,6 +518,14 @@ namespace DAL.Formularios
                 }
                        
         }
-        #endregion        
-    }    
+        #endregion
+
+        #region CargarFormulario
+        public BE.Formularios.RespuestasFormulario CargarFormulario(int pInternoEstablecimiento, int pInternoFormulario)
+        {
+            IEnumerable<RespuestasFormulario> respuestaFormulario = session.Query<RespuestasFormulario>().OrderByDescending(rf => rf.CompletadoFechaHora).Where(rf => rf.InternoEstablecimiento == pInternoEstablecimiento && rf.InternoFormulario == pInternoFormulario).ToList();
+            return respuestaFormulario.First();
+        }
+        #endregion
+    }
 }

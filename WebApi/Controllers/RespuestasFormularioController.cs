@@ -129,7 +129,27 @@ namespace WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return Content(HttpStatusCode.InternalServerError, ex.InnerException.InnerException);
+                return Content(HttpStatusCode.InternalServerError, ex.InnerException.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("CargarFormulario")]
+        public IHttpActionResult CargarFormulario(int pInternoEstablecimiento, int pInternoFormulario)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Content(HttpStatusCode.BadRequest, ModelState); //BadRequest(ModelState);
+            }
+            try
+            {
+                //RespuestasFormulario
+                RespuestasFormulario respuestasFormulario = CRUDRespuestasFormulario.instancia.CargarFormulario(pInternoEstablecimiento, pInternoFormulario);
+                return Content(HttpStatusCode.OK, respuestasFormulario);
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError, ex.InnerException.Message);
             }
         }
     }
