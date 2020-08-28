@@ -50,6 +50,25 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
+        [Route("BuscarPorCUILCompleto")]
+        public IHttpActionResult BuscarPorCuilCompleto(double pCUIL)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Content(HttpStatusCode.BadRequest, ModelState); //BadRequest(ModelState);
+            }
+            try
+            {
+                BE.AfiliadoDatos afiliadoDatos = CRUDAfiliadoDatos.instancia.BuscarPorCUILCompleto(pCUIL);
+                return Content(HttpStatusCode.OK, afiliadoDatos);
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError, ex.InnerException.InnerException);
+            }
+        }
+
+        [HttpGet]
         [Route("BuscarPorNombre")]
         public List<BE.AfiliadoDatos> BuscarPorNombre(string pNombre, int pCantidad)
         {

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NHibernate.Mapping.ByCode.Conformist;
 using NHibernate.Mapping.ByCode;
+using BE.Ref;
 
 namespace SL
 {
@@ -33,11 +34,19 @@ namespace SL
             Property(p => p.Nacionalidad);
             Property(p => p.Sexo);
             Property(p => p.DomicilioCalle);
-            Property(p => p.CodLocalidadSRT);
-            Property(p => p.CodLocalidadPostal);
+            //Property(p => p.CodLocalidadSRT);
+            //Property(p => p.CodLocalidadPostal);
             Property(p => p.Telefono);
             Property(p => p.EstadoCivil);
             Property(p => p.eMail);
+            ManyToOne(afiliado => afiliado.SRTLocalidad, map =>
+                {
+                    map.Column("CodLocalidadPostal");
+                    map.Class(typeof(SRTLocalidad));
+                    map.Fetch(FetchKind.Select);
+                    map.UniqueKey("CodPostal");
+                    map.Lazy(LazyRelation.NoLazy);
+                });
         }
     }
 }

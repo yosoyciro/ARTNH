@@ -21,11 +21,12 @@ namespace BE
         public virtual int Nacionalidad { get; set; }
         public virtual string Sexo { get; set; }
         public virtual string DomicilioCalle { get; set; }
-        public virtual string CodLocalidadSRT { get; set; }
-        public virtual string CodLocalidadPostal { get; set; }
+        //public virtual string CodLocalidadSRT { get; set; }
+        //public virtual string CodLocalidadPostal { get; set; }
         public virtual string Telefono { get; set; }
         public virtual string EstadoCivil { get; set; }
         public virtual string eMail { get; set; }
+        public virtual BE.Ref.SRTLocalidad SRTLocalidad { get; set; }
     }
 
     

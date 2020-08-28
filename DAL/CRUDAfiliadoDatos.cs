@@ -60,6 +60,33 @@ namespace DAL
             }
         }
 
+        /// <summary>
+        /// Funcion que devuelve todos los datos del afiliado, pasando como parametro el CUIL
+        /// </summary>
+        /// <param name="pCUIL"></param>
+        /// <returns></returns>
+        public BE.AfiliadoDatos BuscarPorCUILCompleto(double pCUIL)
+        {
+            //UInt64 cuil = Convert.ToUInt64(pCUIL);
+            BE.AfiliadoDatos afiliadoDatos = new BE.AfiliadoDatos();
+            try
+            {
+                afiliadoDatos = session.Query<BE.AfiliadoDatos>().Where(a => a.Cuil == pCUIL).SingleOrDefault();
+                
+                return afiliadoDatos;
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            finally
+            {
+
+            }
+        }
+
         public BE.AfiliadoDatos BuscarPorInterno(int pInterno)
         {
             try

@@ -6,6 +6,7 @@ using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
 using System;
 using System.Configuration;
+using SL.Mapeos.Ref;
 
 namespace SL
 {
@@ -150,6 +151,7 @@ namespace SL
                     mapper.AddMapping<MapFormulariosRARDetalleAgentes>();
                     mapper.AddMapping<MapRefAgenteCausante>();
                     mapper.AddMapping<MapRespuestasFormularioRel>();
+                    mapper.AddMapping<MapSRTLocalidad>();
                     //mapper.AddMapping<MapUsuarios>();
                     #endregion
 
