@@ -23,6 +23,7 @@ namespace BE
         public virtual DateTime Apertura { get; set; }
         public virtual DateTime? Cierre { get; set; }
         public virtual Int64 Siniestro { get; set; }
+        public virtual int ContactoDomicilioInterno { get; set; }
         public virtual ReclamoConsultaContacto RefReclamoConsultaContacto { get; set; }
         public virtual ReclamoConsultaDetalle RefReclamoConsultaDetalle { get; set; }
         

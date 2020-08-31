@@ -28,7 +28,8 @@ namespace SL
             Property(p => p.Operador);
             Property(p => p.Revision);
             Property(p => p.CuerpoHtml);
-
+            Property(p => p.SectorInterno);
+            Property(p => p.OperadorReasigna);
         }
     }
 }

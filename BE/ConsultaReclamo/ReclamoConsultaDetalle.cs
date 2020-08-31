@@ -23,6 +23,7 @@ namespace BE
         public virtual int Operador { get; set; }
         public virtual DateTime? Revision { get; set; }
         public virtual string CuerpoHtml { get; set; }
-
+        public virtual int SectorInterno { get; set; }
+        public virtual int OperadorReasigna { get; set; }
     }
 }

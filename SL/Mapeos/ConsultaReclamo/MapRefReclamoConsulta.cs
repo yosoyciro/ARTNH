@@ -27,7 +27,7 @@ namespace SL
             Property(p => p.Apertura);
             Property(p => p.Cierre);
             Property(p => p.Siniestro);
-
+            Property(p => p.ContactoDomicilioInterno);
         }
     }
 }

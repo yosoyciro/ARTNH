@@ -24,12 +24,12 @@ namespace WebApi.Controllers
             try
             {
                 oCRUDRec.Agregar(rec);
+                return Ok(rec);
             }
             catch (Exception ex)
             {
                 throw ex;
-            }
-            return Ok(rec);
+            }            
         }
     }
 }

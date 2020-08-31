@@ -27,6 +27,8 @@ namespace DAL
             ITransaction transaction = session.BeginTransaction();
             try
             {
+                session.Clear();
+
                 //busca contacto
                 int internoContacto = 0;
                 BE.ReclamoConsultaContacto contacto = session.Query<BE.ReclamoConsultaContacto>().Where(a => a.DocNro == pRefReclamoConsulta.RefReclamoConsultaContacto.DocNro && a.DocTipo == pRefReclamoConsulta.RefReclamoConsultaContacto.DocTipo).SingleOrDefault();
@@ -97,8 +99,8 @@ namespace DAL
                 else
                     session.Merge(pRefReclamoConsulta.RefReclamoConsultaDetalle);
 
-                transaction.Commit();
                 session.Flush();
+                transaction.Commit();                
                 return interno;
             }
 
