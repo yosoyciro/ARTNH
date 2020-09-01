@@ -152,6 +152,7 @@ namespace SL
                     mapper.AddMapping<MapRefAgenteCausante>();
                     mapper.AddMapping<MapRespuestasFormularioRel>();
                     mapper.AddMapping<MapSRTLocalidad>();
+                    mapper.AddMapping<MapRefPais>();
                     //mapper.AddMapping<MapUsuarios>();
                     #endregion
 

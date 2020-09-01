@@ -31,22 +31,38 @@ namespace SL
             Property(p => p.DocNumero);
             Property(p => p.Nombre);
             Property(p => p.FechaNacimiento);
-            Property(p => p.Nacionalidad);
+            //roperty(p => p.Nacionalidad);
             Property(p => p.Sexo);
             Property(p => p.DomicilioCalle);
-            //Property(p => p.CodLocalidadSRT);
+            Property(p => p.DomicilioNro);
+            Property(p => p.DomicilioPiso);
+            Property(p => p.DomicilioDpto);
+            Property(p => p.CodLocalidadSRT);
             //Property(p => p.CodLocalidadPostal);
             Property(p => p.Telefono);
             Property(p => p.EstadoCivil);
             Property(p => p.eMail);
-            ManyToOne(afiliado => afiliado.SRTLocalidad, map =>
+            /*ManyToOne(afiliado => afiliado.SRTLocalidad, map =>
                 {
-                    map.Column("CodLocalidadPostal");
+                    //map.Column("CodLocalidadPostal");
+                    map.Column("CodLocalidadSRT");                    
                     map.Class(typeof(SRTLocalidad));
                     map.Fetch(FetchKind.Select);
-                    map.UniqueKey("CodPostal");
+                    //map.UniqueKey("CodPostal");
+                    map.UniqueKey("Codigo");
                     map.Lazy(LazyRelation.NoLazy);
-                });
+                    map.NotFound(NotFoundMode.Ignore);
+                });*/
+
+            ManyToOne(afiliado => afiliado.Pais, map =>
+            {
+                map.Column("Nacionalidad");
+                map.Class(typeof(RefPais));
+                map.Fetch(FetchKind.Select);
+                map.UniqueKey("Codigo");
+                map.Lazy(LazyRelation.NoLazy);
+                map.NotFound(NotFoundMode.Ignore);
+            });
         }
     }
 }

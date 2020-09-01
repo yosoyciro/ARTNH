@@ -84,6 +84,7 @@
     <Compile Include="Mapeos\ProveedoresCtaCte\MapCtaCtePagos.cs" />
     <Compile Include="Mapeos\ProveedoresCtaCte\MapProveedores.cs" />
     <Compile Include="Mapeos\Ref\MapRefAgenteCausante.cs" />
+    <Compile Include="Mapeos\Ref\MapRefPais.cs" />
     <Compile Include="Mapeos\Ref\MapSRTLocalidad.cs" />
     <Compile Include="Mapeos\Ref\MapSRTSVCCTSustancias.cs" />
     <Compile Include="MapUsuarios.cs" />

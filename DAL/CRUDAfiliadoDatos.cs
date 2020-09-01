@@ -72,6 +72,9 @@ namespace DAL
             try
             {
                 afiliadoDatos = session.Query<BE.AfiliadoDatos>().Where(a => a.Cuil == pCUIL).SingleOrDefault();
+                //Localidad
+                if (afiliadoDatos != null && (afiliadoDatos.CodLocalidadSRT != "" || afiliadoDatos.CodLocalidadSRT != null))
+                    afiliadoDatos.SRTLocalidad = session.Query<BE.Ref.SRTLocalidad>().Where(l => l.Codigo == afiliadoDatos.CodLocalidadSRT).SingleOrDefault();
                 
                 return afiliadoDatos;
             }
