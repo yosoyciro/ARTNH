@@ -17,6 +17,7 @@ namespace BE
                 instancia = new Login();
         }
         #endregion
+        
         /// <summary>
         /// Metodo que verifica usuario y clave.
         /// </summary>

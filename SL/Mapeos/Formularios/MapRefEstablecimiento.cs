@@ -29,6 +29,9 @@ namespace SL
             Property(p => p.EstadoAccion);
             Property(p => p.EstadoFecha);
             Property(p => p.EstadoSituacion);
+            Property(p => p.CodLocalidadSRT);
+            Property(p => p.Localidad);
+            Property(p => p.Provincia);
         }
     }
 }

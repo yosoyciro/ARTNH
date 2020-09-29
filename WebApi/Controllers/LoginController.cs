@@ -12,15 +12,15 @@ namespace WebApi.Controllers
     public class LoginController : ApiController
     {
         [Route("Login")]
-        [HttpGet]
-        public IHttpActionResult Login(string pUsuario, string pPassword)
+        [HttpPost]
+        public IHttpActionResult Login([FromBody] BE.Usuarios usuario)
         {
-            if (pUsuario == null || pPassword == null)
+            if (usuario.Usuario == null || usuario.Password == null)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             
             try
             {
-                var resultado = DAL.CRUDLogin.instancia.Login(pUsuario, pPassword);
+                var resultado = DAL.CRUDLogin.instancia.Login(usuario.Usuario, usuario.Password);
                 switch (resultado.Status)
                 {
                     case -1:

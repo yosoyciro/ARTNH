@@ -42,7 +42,7 @@ namespace DAL
                     Status = Convert.ToInt32(((object[])usuarios)[5]),
                 };
 
-                //Si el login está ok, genero el token y devuelvo todo en el objeto oUsuario
+                //Si el login está ok, genero el token y devuelvo todo en el objeto oUsuario (sin el pass)
                 switch (oUsuario.Status)
                 {
                     case 1:

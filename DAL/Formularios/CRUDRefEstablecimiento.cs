@@ -25,7 +25,23 @@ namespace DAL.Formularios
         {
             try
             {
-                return session.Query<BE.Formularios.RefEstablecimiento>().Where(a => a.CUIT == pCuit).ToList();
+                var establecimientos = session.Query<BE.Formularios.RefEstablecimiento>().Where(a => a.CUIT == pCuit).ToList();
+                foreach (var item in establecimientos)
+                {
+                    if (item != null && (item.CodLocalidadSRT != "" || item.CodLocalidadSRT != null))
+                    {
+                        var localidadSRT = session.Query<BE.Ref.SRTLocalidad>().Where(l => l.Codigo == item.CodLocalidadSRT).SingleOrDefault();
+                        item.Localidad = localidadSRT.Nombre;
+                        item.Provincia = localidadSRT.NombreProvincia;
+                    }
+                    else
+                    {
+                        item.Localidad = "Sin Localidad";
+                        item.Provincia = "Sin Provincia";
+                    }
+                }
+               
+                return establecimientos;
             }
 
             catch (Exception ex)
@@ -38,7 +54,20 @@ namespace DAL.Formularios
         {
             try
             {
-                return session.Get<BE.Formularios.RefEstablecimiento>(pInternoEstablecimiento);
+                var establecimiento = session.Get<BE.Formularios.RefEstablecimiento>(pInternoEstablecimiento);
+                if (establecimiento != null && (establecimiento.CodLocalidadSRT != "" || establecimiento.CodLocalidadSRT != null))
+                { 
+                    var SRTLocalidad = session.Query<BE.Ref.SRTLocalidad>().Where(l => l.Codigo == establecimiento.CodLocalidadSRT).SingleOrDefault();
+                    establecimiento.Localidad = SRTLocalidad.Nombre;
+                    establecimiento.Provincia = SRTLocalidad.NombreProvincia;
+                }
+                else
+                {
+                    establecimiento.Localidad = "Sin Localidad";
+                    establecimiento.Provincia = "Sin Provincia";
+                }
+
+                return establecimiento;
             }
 
             catch (Exception ex)

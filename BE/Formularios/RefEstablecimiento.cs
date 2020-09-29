@@ -24,5 +24,8 @@ namespace BE.Formularios
         public virtual int EstadoFecha { get; set; }
         public virtual string EstadoSituacion { get; set; }
         public virtual int BajaMotivo { get; set; }
+        public virtual string CodLocalidadSRT { get; set; }
+        public virtual string Localidad { get; set; }
+        public virtual string Provincia { get; set; }
     }
 }
