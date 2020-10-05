@@ -86,6 +86,8 @@ namespace DAL
                     var referenteDatos = session.Query<BE.Formularios.ReferenteDatos>().FirstOrDefault(a => a.CUIT == afiliadoCtaCte.CuitContribuyente);
                     if (afiliadoCtaCte != null && referenteDatos != null)
                         afiliadoDatos.Empresa = referenteDatos.RazonSocial;
+                    else
+                        afiliadoDatos.Empresa = "Sin Empresa";
 
                     var polizaCabecera = session.Query<BE.PolizaCabecera>().OrderByDescending(a => a.Interno).FirstOrDefault(b => b.EmpleadorCUIT == referenteDatos.CUIT);
                     if (polizaCabecera != null)
