@@ -25,7 +25,7 @@ namespace WebApi.Controllers
                 {
                     case -1:
                     case 0:
-                        return Content(HttpStatusCode.NotFound, "Error en usuario/contraseña");
+                        return Content(HttpStatusCode.NotFound, "Error en CUIT/Password");
 
                     default:
                         return Content(HttpStatusCode.OK, resultado);

@@ -27,5 +27,7 @@ namespace BE.Formularios
         public virtual string CodLocalidadSRT { get; set; }
         public virtual string Localidad { get; set; }
         public virtual string Provincia { get; set; }
+        public virtual int Codigo { get; set; }
+        public virtual int Numero { get; set; }
     }
 }

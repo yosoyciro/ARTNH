@@ -12,11 +12,11 @@ namespace WebApi.Controllers.FormRAR
     {
         [HttpGet]
         [Route("ConsultarCargados")]
-        public IHttpActionResult ConsultarRARCargados()
+        public IHttpActionResult ConsultarRARCargados(double pCUIT)
         {
             try
             {
-                IList<BE.FormRAR.FormulariosRARCargados> formulariosRARCargados = DAL.FormRAR.FormulariosRARCargados.instancia.ConsultarFormulariosRARCargados();
+                IList<BE.FormRAR.FormulariosRARCargados> formulariosRARCargados = DAL.FormRAR.FormulariosRARCargados.instancia.ConsultarFormulariosRARCargados(pCUIT);
                 return Content(HttpStatusCode.OK, formulariosRARCargados);
             }
 

@@ -153,6 +153,8 @@ namespace SL
                     mapper.AddMapping<MapRespuestasFormularioRel>();
                     mapper.AddMapping<MapSRTLocalidad>();
                     mapper.AddMapping<MapRefPais>();
+                    mapper.AddMapping<MapRefEmpleador>();
+                    mapper.AddMapping<MapPolizaCabecera>();
                     //mapper.AddMapping<MapUsuarios>();
                     #endregion
 

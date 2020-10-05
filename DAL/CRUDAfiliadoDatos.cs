@@ -72,10 +72,28 @@ namespace DAL
             try
             {
                 afiliadoDatos = session.Query<BE.AfiliadoDatos>().Where(a => a.Cuil == pCUIL).SingleOrDefault();
-                //Localidad
-                if (afiliadoDatos != null && (afiliadoDatos.CodLocalidadSRT != "" || afiliadoDatos.CodLocalidadSRT != null))
-                    afiliadoDatos.SRTLocalidad = session.Query<BE.Ref.SRTLocalidad>().Where(l => l.Codigo == afiliadoDatos.CodLocalidadSRT).SingleOrDefault();
+                if (afiliadoDatos != null)
+                {
+                    if (afiliadoDatos.CodLocalidadSRT != "" || afiliadoDatos.CodLocalidadSRT != null)
+                        //Localidad
+                        afiliadoDatos.SRTLocalidad = session.Query<BE.Ref.SRTLocalidad>().Where(l => l.Codigo == afiliadoDatos.CodLocalidadSRT).SingleOrDefault();
+
+                    //Empresa y NroContrato
+                    var afiliadoCtaCte = session.Query<BE.AfiliadoCuentaCorriente>()
+                        .Where(a => a.CuitAportante == pCUIL)
+                        .OrderByDescending(a => a.Periodo)
+                        .FirstOrDefault();
+                    var referenteDatos = session.Query<BE.Formularios.ReferenteDatos>().FirstOrDefault(a => a.CUIT == afiliadoCtaCte.CuitContribuyente);
+                    if (afiliadoCtaCte != null && referenteDatos != null)
+                        afiliadoDatos.Empresa = referenteDatos.RazonSocial;
+
+                    var polizaCabecera = session.Query<BE.PolizaCabecera>().OrderByDescending(a => a.Interno).FirstOrDefault(b => b.EmpleadorCUIT == referenteDatos.CUIT);
+                    if (polizaCabecera != null)
+                        afiliadoDatos.NroContrato = polizaCabecera.Interno;                    
+                }
+
                 
+
                 return afiliadoDatos;
             }
 

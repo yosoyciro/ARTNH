@@ -7,7 +7,7 @@
       Server=SRV-SQL;initial catalog=Operativa;User Id=sa;Password=Binaria676
     </property>
     <property name="show_sql">false</property>
-    <property name="dialect">NHibernate.Dialect.MsSql2012Dialect</property>
+    <property name="dialect">NHibernate.Dialect.MsSql2008Dialect</property>
     <property name = "connection.driver_class">NHibernate.Driver.SqlClientDriver</property>
   </session-factory>
 </hibernate-configuration>

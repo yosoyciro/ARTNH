@@ -31,6 +31,8 @@ namespace BE
         public virtual string eMail { get; set; }
         public virtual BE.Ref.SRTLocalidad SRTLocalidad { get; set; }
         public virtual BE.Ref.RefPais Pais { get; set; }
+        public virtual string Empresa { get; set; }
+        public virtual int NroContrato { get; set; }
     }
 
     

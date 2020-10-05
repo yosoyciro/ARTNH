@@ -30,8 +30,10 @@ namespace SL
             Property(p => p.EstadoFecha);
             Property(p => p.EstadoSituacion);
             Property(p => p.CodLocalidadSRT);
-            Property(p => p.Localidad);
-            Property(p => p.Provincia);
+            Property(p => p.Codigo);
+            Property(p => p.Numero);
+            //Property(p => p.Localidad);
+            //Property(p => p.Provincia);
         }
     }
 }

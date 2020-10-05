@@ -14,11 +14,11 @@ namespace WebApi.Controllers
     {
         [HttpGet]
         [Route("Consultar")]
-        public IHttpActionResult Listar()
+        public IHttpActionResult Listar(double pCuit)
         {
             try
             {
-                IList<BE.Formularios.FormulariosCargados> formulariosCargados = DAL.Formularios.FormulariosCargados.instancia.ConsultaFormulariosCargados();
+                IList<BE.Formularios.FormulariosCargados> formulariosCargados = DAL.Formularios.FormulariosCargados.instancia.ConsultaFormulariosCargados(pCuit);
                 return Content(HttpStatusCode.OK, formulariosCargados);
             }
 
