@@ -208,6 +208,7 @@
     <Compile Include="Controllers\RespuestasCuestionarioController.cs" />
     <Compile Include="Controllers\RespuestasFormularioController.cs" />
     <Compile Include="Controllers\SeccionesController.cs" />
+    <Compile Include="Controllers\Usuario\UsuarioController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

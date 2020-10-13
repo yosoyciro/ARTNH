@@ -89,6 +89,7 @@
     <Compile Include="Mapeos\Ref\MapRefPais.cs" />
     <Compile Include="Mapeos\Ref\MapSRTLocalidad.cs" />
     <Compile Include="Mapeos\Ref\MapSRTSVCCTSustancias.cs" />
+    <Compile Include="Mapeos\Usuario\MapAutParametro.cs" />
     <Compile Include="MapUsuarios.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

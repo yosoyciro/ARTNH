@@ -85,7 +85,17 @@ namespace DAL
                         .FirstOrDefault();
                     var referenteDatos = session.Query<BE.Formularios.ReferenteDatos>().FirstOrDefault(a => a.CUIT == afiliadoCtaCte.CuitContribuyente);
                     if (afiliadoCtaCte != null && referenteDatos != null)
+                    {
+                        //Empresa
                         afiliadoDatos.Empresa = referenteDatos.RazonSocial;
+                        if (referenteDatos.CUIT == 30707933336)
+                            afiliadoDatos.Empresa = "RENATRE";
+                        if (referenteDatos.CUIT == 30533062233)
+                            afiliadoDatos.Empresa = "UATRE";
+                        if (referenteDatos.CUIT == 30547339416)
+                            afiliadoDatos.Empresa = "OSPRERA";                        
+                        afiliadoDatos.CUITEmpresa = referenteDatos.CUIT;
+                    }                        
                     else
                         afiliadoDatos.Empresa = "Sin Empresa";
 

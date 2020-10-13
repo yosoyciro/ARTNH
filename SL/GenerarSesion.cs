@@ -155,6 +155,7 @@ namespace SL
                     mapper.AddMapping<MapRefPais>();
                     mapper.AddMapping<MapRefEmpleador>();
                     mapper.AddMapping<MapPolizaCabecera>();
+                    mapper.AddMapping<MapAutParametro>();
                     //mapper.AddMapping<MapUsuarios>();
                     #endregion
 

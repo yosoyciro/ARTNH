@@ -108,6 +108,7 @@
     <Compile Include="Ref\CRUDSRTSVCCTSustancias.cs" />
     <Compile Include="TokenGen.cs" />
     <Compile Include="TokenValidationHandler.cs" />
+    <Compile Include="Usuario\CRUDAutParametro.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BE\BE.csproj">
