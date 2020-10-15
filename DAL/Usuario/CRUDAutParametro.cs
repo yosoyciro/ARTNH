@@ -42,11 +42,14 @@ namespace DAL.Usuario
                 BE.Usuario.AutParametro autParametro = session.Get<BE.Usuario.AutParametro>(pInterno);
 
                 if (autParametro != null)
+                {
                     session.Delete(autParametro);
-
-                session.Flush();
-                transaction.Commit();
-                return true;
+                    session.Flush();
+                    transaction.Commit();
+                    return true;
+                }
+                else
+                    return false;                
             }
 
             catch (Exception ex)

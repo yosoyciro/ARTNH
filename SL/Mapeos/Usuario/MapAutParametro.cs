@@ -16,6 +16,7 @@ namespace SL
             Id(x => x.Interno);
             Property(p => p.Parametro);
             Property(p => p.CUIT);
+            Property(p => p.Fecha);
         }
     }
 }

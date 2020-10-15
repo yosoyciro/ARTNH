@@ -11,5 +11,6 @@ namespace BE.Usuario
         public virtual int Interno { get; set; }
         public virtual int Parametro { get; set; }
         public virtual double CUIT { get; set; }
+        public virtual DateTime Fecha { get; set; }
     }
 }
