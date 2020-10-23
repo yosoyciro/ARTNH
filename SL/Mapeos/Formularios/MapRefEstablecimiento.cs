@@ -32,6 +32,7 @@ namespace SL
             Property(p => p.CodLocalidadSRT);
             Property(p => p.Codigo);
             Property(p => p.Numero);
+            Property(p => p.BajaMotivo);
             //Property(p => p.Localidad);
             //Property(p => p.Provincia);
         }

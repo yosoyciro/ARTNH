@@ -20,7 +20,7 @@ namespace BE.FormRAR
         public virtual DateTime? FechaPresentacion { get; set; }
         public virtual Int32 InternoEstablecimiento { get; set; }
         public virtual Int32 CantTrabajadoresExpuestos { get; set; }
-        public virtual Int32 CantTrabajadoresNoExpuestos { get; set; }    
+        public virtual Int32 CantTrabajadoresNoExpuestos { get; set; }        
     }
 }
 

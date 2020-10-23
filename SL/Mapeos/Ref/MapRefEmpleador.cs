@@ -7,6 +7,7 @@ namespace SL.Mapeos.Ref
     {
         public MapRefEmpleador()
         {
+            Schema("Referencia.dbo");
             Id(x => x.Interno);
             Property(p => p.CUIT);
             Property(p => p.CuilFirmante1);
@@ -16,6 +17,7 @@ namespace SL.Mapeos.Ref
             Property(p => p.Comentario);
             Property(p => p.ContratoNro);
             Property(p => p.CIIU);
+            Property(p => p.NotificacionRGRL);
         }
         
     }

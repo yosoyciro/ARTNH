@@ -23,6 +23,7 @@ namespace DAL.Usuario
         #region Funciones ABM
         public BE.Usuario.AutParametro Buscar(int pParametro)
         {
+            session.Clear();
             try
             {
                 return session.Query<BE.Usuario.AutParametro>().FirstOrDefault(a => a.Parametro == pParametro);                

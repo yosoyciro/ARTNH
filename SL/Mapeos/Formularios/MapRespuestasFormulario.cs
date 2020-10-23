@@ -23,6 +23,7 @@ namespace SL
             Property(p => p.CreacionFechaHora);
             Property(p => p.CompletadoFechaHora);
             Property(p => p.NotificacionFecha);
+            Property(p => p.InternoPresentacion);
         }
     }
 }

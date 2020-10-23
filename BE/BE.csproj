@@ -58,6 +58,7 @@
     <Compile Include="FormRAR\FormulariosRARCargados.cs" />
     <Compile Include="FormRAR\FormulariosRARDetalle.cs" />
     <Compile Include="FormRAR\FormulariosRARDetalleAgentes.cs" />
+    <Compile Include="Formularios\Presentaciones.cs" />
     <Compile Include="Formularios\RefEstablecimientoActualizar.cs" />
     <Compile Include="Formularios\RespuestasFormularioRel.cs" />
     <Compile Include="PolizaCabecera.cs" />

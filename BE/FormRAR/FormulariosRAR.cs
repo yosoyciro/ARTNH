@@ -17,6 +17,7 @@ namespace BE.FormRAR
         public virtual int CantTrabajadoresNoExpuestos { get; set; }
         public virtual System.DateTime? FechaCreacion { get; set; }
         public virtual System.DateTime? FechaPresentacion { get; set; }
-        
+        public virtual int InternoPresentacion { get; set; }
+
     }
 }

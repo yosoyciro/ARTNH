@@ -115,7 +115,7 @@ namespace WebApi.Controllers
 
         [HttpPost]
         [Route("ReplicarFormulario")]
-        public IHttpActionResult ReplicarFormulario(RespuestasFormulario pRespuestasFormulario)
+        public IHttpActionResult ReplicarFormulario(int pInternoRespuestaFormulario, int pInternoEstablecimientoDestino)
         {
             if (!ModelState.IsValid)
             {
@@ -124,7 +124,7 @@ namespace WebApi.Controllers
             try
             {
                 //RespuestasFormulario
-                RespuestasFormulario respuestasFormulario = CRUDRespuestasFormulario.instancia.Replicar(pRespuestasFormulario);
+                RespuestasFormulario respuestasFormulario = CRUDRespuestasFormulario.instancia.Replicar(pInternoRespuestaFormulario, pInternoEstablecimientoDestino);
                 return Content(HttpStatusCode.OK, respuestasFormulario);
             }
             catch (Exception ex)

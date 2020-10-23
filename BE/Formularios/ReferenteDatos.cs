@@ -31,6 +31,9 @@ namespace BE.Formularios
         public virtual int IdActividadPrincipal { get; set; }
         public virtual double IdPersona { get; set; }
         public virtual string TipoPersona { get; set; }
-        public virtual string TipoClave { get; set; }       
+        public virtual string TipoClave { get; set; }
+
+        //Propiedades de otras entidades
+        public virtual DateTime? NotificacionRGRL { get; set; }
     }
 }

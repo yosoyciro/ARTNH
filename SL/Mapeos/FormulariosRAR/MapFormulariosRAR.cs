@@ -18,6 +18,7 @@ namespace SL
             Property(p => p.CantTrabajadoresNoExpuestos);
             Property(p => p.FechaCreacion);
             Property(p => p.FechaPresentacion);
+            Property(p => p.InternoPresentacion);
         }
     }
 }

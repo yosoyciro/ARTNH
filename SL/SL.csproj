@@ -68,6 +68,7 @@
     <Compile Include="Mapeos\FormulariosRAR\MapFormulariosRARDetalleAgentes.cs" />
     <Compile Include="Mapeos\Formularios\MapCuestionario.cs" />
     <Compile Include="Mapeos\Formularios\MapFormulario.cs" />
+    <Compile Include="Mapeos\Formularios\MapPresentaciones.cs" />
     <Compile Include="Mapeos\Formularios\MapReferenteDatos.cs" />
     <Compile Include="Mapeos\Formularios\MapRefEstablecimiento.cs" />
     <Compile Include="Mapeos\Formularios\MapRespuestasContratista.cs" />

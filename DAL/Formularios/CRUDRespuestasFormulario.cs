@@ -439,71 +439,116 @@ namespace DAL.Formularios
         /// </summary>
         /// <param name="pRespuestasFormulario"></param>
         /// <returns></returns>
-        public BE.Formularios.RespuestasFormulario Replicar(BE.Formularios.RespuestasFormulario pRespuestasFormulario)
+        public BE.Formularios.RespuestasFormulario Replicar(int pInternoRespuestaFormulario, int pInternoEstablecimientoDestino)
         {
             ITransaction transaction = session.BeginTransaction();
             try
             {
-                //Nuevo RespuestasFormulario
+                //BUsco RespuestasFormulario
+                var respuestasFormulario = session.Get<BE.Formularios.RespuestasFormulario>(pInternoRespuestaFormulario);
+                respuestasFormulario.RespuestasContratista = session.Query<BE.Formularios.RespuestasContratista>().Where(r => r.InternoRespuestaFormulario == pInternoRespuestaFormulario).ToList();
+                respuestasFormulario.RespuestasCuestionario = session.Query<BE.Formularios.RespuestasCuestionario>().Where(r => r.InternoRespuestaFormulario == pInternoRespuestaFormulario).ToList();
+                respuestasFormulario.RespuestasGremio = session.Query<BE.Formularios.RespuestasGremio>().Where(r => r.InternoRespuestaFormulario == pInternoRespuestaFormulario).ToList();
+                respuestasFormulario.RespuestasResponsable = session.Query<BE.Formularios.RespuestasResponsable>().Where(r => r.InternoRespuestaFormulario == pInternoRespuestaFormulario).ToList();
+
                 var nuevaRespuestaFormulario = new BE.Formularios.RespuestasFormulario
                 {
-                    InternoFormulario = pRespuestasFormulario.InternoFormulario,
-                    InternoEstablecimiento = pRespuestasFormulario.InternoEstablecimiento,
+                    InternoFormulario = respuestasFormulario.InternoFormulario,
+                    InternoEstablecimiento = pInternoEstablecimientoDestino,
                     CreacionFechaHora = DateTime.Today,
-                    CompletadoFechaHora = null, //Convert.ToDateTime("1800-01-01"),
-                    NotificacionFecha = pRespuestasFormulario.NotificacionFecha,
-                    RespuestasCuestionario = pRespuestasFormulario.RespuestasCuestionario,
-                    RespuestasGremio = pRespuestasFormulario.RespuestasGremio,
-                    RespuestasContratista = pRespuestasFormulario.RespuestasContratista,
-                    RespuestasResponsable = pRespuestasFormulario.RespuestasResponsable
-                };
-                    
+                    CompletadoFechaHora = null,
+                    NotificacionFecha = respuestasFormulario.NotificacionFecha,
+                    InternoPresentacion = 0,
+                    //Cuestionario, gremios, contratistas, responsables
+                };                    
+                               
+
                 session.Save(nuevaRespuestaFormulario);
 
                 //RespuestasCuestionario
-                foreach (var item in nuevaRespuestaFormulario.RespuestasCuestionario)
+                foreach (var item in respuestasFormulario.RespuestasCuestionario)
                 {
-                    BE.Formularios.RespuestasCuestionario respuesta = session.Get<BE.Formularios.RespuestasCuestionario>(item.Interno);
-                    respuesta.InternoRespuestaFormulario = nuevaRespuestaFormulario.Interno;
-
-                    session.Save(item);
+                    var respuestasCuestionario = new BE.Formularios.RespuestasCuestionario
+                    {
+                        InternoCuestionario = item.InternoCuestionario,
+                        InternoRespuestaFormulario = nuevaRespuestaFormulario.Interno,
+                        Respuesta = item.Respuesta,
+                        FechaRegularizacion = item.FechaRegularizacion,
+                        Observaciones = item.Observaciones,
+                        EstadoAccion = item.EstadoAccion,
+                        EstadoFecha = item.EstadoFecha,
+                        EstadoSituacion = item.EstadoSituacion,
+                        BajaMotivo = item.BajaMotivo,
+                    };
+                    
+                    session.Save(respuestasCuestionario);
                 }
 
                 //RespuestasGremio
-                foreach (var item in nuevaRespuestaFormulario.RespuestasGremio)
+                foreach (var item in respuestasFormulario.RespuestasGremio)
                 {
-                    BE.Formularios.RespuestasGremio gremio = session.Get<BE.Formularios.RespuestasGremio>(item.Interno);
-                    gremio.InternoRespuestaFormulario = nuevaRespuestaFormulario.Interno;
-
-                    session.Save(item);                   
+                    var respuestasGremio = new BE.Formularios.RespuestasGremio
+                    {
+                        InternoRespuestaFormulario = nuevaRespuestaFormulario.Interno,
+                        Legajo = item.Legajo,
+                        Nombre = item.Nombre,
+                        EstadoAccion = item.EstadoAccion,
+                        EstadoFecha = item.EstadoFecha,
+                        EstadoSituacion = item.EstadoSituacion,
+                        BajaMotivo = item.BajaMotivo,
+                        Renglon = item.Renglon,
+                    };
+                    session.Save(respuestasGremio);
                 }
 
                 //RespuestasContratista
-                foreach (var item in nuevaRespuestaFormulario.RespuestasContratista)
+                foreach (var item in respuestasFormulario.RespuestasContratista)
                 {
-                    BE.Formularios.RespuestasContratista contratista = session.Get<BE.Formularios.RespuestasContratista>(item.Interno);
-                    contratista.InternoRespuestaFormulario = nuevaRespuestaFormulario.Interno;
-
-                    session.Save(item);
+                    var respuestasContratista = new RespuestasContratista
+                    {
+                        InternoRespuestaFormulario = nuevaRespuestaFormulario.Interno,
+                        CUIT = item.CUIT,
+                        Contratista = item.Contratista,
+                        EstadoAccion = item.EstadoAccion,
+                        EstadoFecha = item.EstadoFecha,
+                        EstadoSituacion = item.EstadoSituacion,
+                        BajaMotivo = item.BajaMotivo,
+                        Renglon = item.Renglon,
+                    };
+                    session.Save(respuestasContratista);
                 }
 
                 //RespuestasResponsables
-                foreach (var item in nuevaRespuestaFormulario.RespuestasResponsable)
+                foreach (var item in respuestasFormulario.RespuestasResponsable)
                 {
-                    BE.Formularios.RespuestasResponsable responsable = session.Get<BE.Formularios.RespuestasResponsable>(item.Interno);
-                    responsable.InternoRespuestaFormulario = nuevaRespuestaFormulario.Interno;
-
-                    session.Save(item);
+                    var respuestasResponsable = new RespuestasResponsable
+                    {
+                        InternoRespuestaFormulario = nuevaRespuestaFormulario.Interno,
+                        CUIT = item.CUIT,
+                        Responsable = item.Responsable,
+                        Cargo = item.Cargo,
+                        Representacion = item.Representacion,
+                        EsContratado = item.EsContratado,
+                        TituloHabilitante = item.TituloHabilitante,
+                        Matricula = item.Matricula,
+                        EntidadOtorganteTitulo = item.EntidadOtorganteTitulo,
+                        EstadoAccion = item.EstadoAccion,
+                        EstadoFecha = item.EstadoFecha,
+                        EstadoSituacion = item.EstadoSituacion,
+                        BajaMotivo = item.BajaMotivo,
+                        Renglon = item.Renglon,
+                    };
+                    session.Save(respuestasResponsable);
                 }
 
 
-                //RespuestasFormularioRel - Grabo la relación entre el formulario original y la nueva instancia
+                /*//RespuestasFormularioRel - Grabo la relación entre el formulario original y la nueva instancia
                 var respuestasFormularioRel = new BE.Formularios.RespuestasFormularioRel
                 {
                     InternoRespuestaFormularioNuevo = nuevaRespuestaFormulario.Interno,
                     InternoRespuestaFormularioOriginal = pRespuestasFormulario.Interno
                 };
-                session.Save(respuestasFormularioRel);
+                session.Save(respuestasFormularioRel);*/
 
                 session.Flush();
                 transaction.Commit();

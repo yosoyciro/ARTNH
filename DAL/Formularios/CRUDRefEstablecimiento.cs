@@ -23,14 +23,19 @@ namespace DAL.Formularios
 
         public List<BE.Formularios.RefEstablecimiento> ListarPorCuit(double pCuit)
         {
+            session.Clear();
             try
             {
-                var establecimientos = session.Query<BE.Formularios.RefEstablecimiento>().Where(a => a.CUIT == pCuit).ToList();
+                var establecimientos = session.Query<BE.Formularios.RefEstablecimiento>()
+                    .Where(a => a.CUIT == pCuit && a.BajaMotivo == 0)
+                    .ToList();
                 foreach (var item in establecimientos)
                 {
-                    if (item != null && (item.CodLocalidadSRT != "" || item.CodLocalidadSRT != null))
+                    if (item != null && item.CodLocalidadSRT != "" && item.CodLocalidadSRT != null)
                     {
-                        var localidadSRT = session.Query<BE.Ref.SRTLocalidad>().Where(l => l.Codigo == item.CodLocalidadSRT).SingleOrDefault();
+                        var localidadSRT = session.Query<BE.Ref.SRTLocalidad>()
+                            .Where(l => l.Codigo == item.CodLocalidadSRT)
+                            .SingleOrDefault();
                         item.Localidad = localidadSRT.Nombre;
                         item.Provincia = localidadSRT.NombreProvincia;
                     }
@@ -40,7 +45,7 @@ namespace DAL.Formularios
                         item.Provincia = "Sin Provincia";
                     }
                 }
-               
+                session.Flush();
                 return establecimientos;
             }
 
@@ -52,12 +57,15 @@ namespace DAL.Formularios
 
         public BE.Formularios.RefEstablecimiento ListarPorInterno(int pInternoEstablecimiento)
         {
+            session.Clear();
             try
             {
                 var establecimiento = session.Get<BE.Formularios.RefEstablecimiento>(pInternoEstablecimiento);
                 if (establecimiento != null && (establecimiento.CodLocalidadSRT != "" || establecimiento.CodLocalidadSRT != null))
                 { 
-                    var SRTLocalidad = session.Query<BE.Ref.SRTLocalidad>().Where(l => l.Codigo == establecimiento.CodLocalidadSRT).SingleOrDefault();
+                    var SRTLocalidad = session.Query<BE.Ref.SRTLocalidad>().
+                        Where(l => l.Codigo == establecimiento.CodLocalidadSRT).
+                        SingleOrDefault();
                     establecimiento.Localidad = SRTLocalidad.Nombre;
                     establecimiento.Provincia = SRTLocalidad.NombreProvincia;
                 }

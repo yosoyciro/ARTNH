@@ -15,11 +15,12 @@ namespace DAL.Formularios
             session = SL.GenerarSesion.Instance.Session;
         }
 
-        public IList<BE.Formularios.FormulariosCargados> ConsultaFormulariosCargados(double pCUIT)
+        public IList<BE.Formularios.FormulariosCargados> ConsultaFormulariosCargados(double pCUIT, int pInternoPresentacion)
         {
+            session.Clear();
             try
             {
-                return session.CreateSQLQuery("exec ConsultaFormulariosCargados @pCUIT = N'" + pCUIT + "'")                    
+                return session.CreateSQLQuery("exec ConsultaFormulariosCargados @pCUIT = N'" + pCUIT + "', @pInternoPresentacion = N'" + pInternoPresentacion + "'")                    
                     .AddScalar("Interno", NHibernateUtil.Int32)
                     .AddScalar("CUIT", NHibernateUtil.Double)
                     .AddScalar("RazonSocial", NHibernateUtil.String)

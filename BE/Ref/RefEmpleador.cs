@@ -16,6 +16,7 @@ namespace BE.Ref
         public virtual string Nombre2 { get; set; }
         public virtual string Comentario { get; set; }
         public virtual int ContratoNro { get; set; }
-        public virtual int CIIU { get; set; }
+        public virtual int CIIU { get; set; }        
+        public virtual DateTime? NotificacionRGRL { get; set; }
     }
 }

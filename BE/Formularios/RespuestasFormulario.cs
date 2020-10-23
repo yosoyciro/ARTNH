@@ -22,5 +22,6 @@ namespace BE.Formularios
         public virtual List<RespuestasGremio> RespuestasGremio { get; set; }
         public virtual List<RespuestasContratista> RespuestasContratista { get; set; }
         public virtual List<RespuestasResponsable> RespuestasResponsable { get; set; }
+        public virtual int InternoPresentacion { get; set; }
     }
 }

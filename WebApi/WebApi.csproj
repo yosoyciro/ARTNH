@@ -192,6 +192,7 @@
     <Compile Include="Controllers\FormulariosCargadosController.cs" />
     <Compile Include="Controllers\FormRAR\FormulariosRARController.cs" />
     <Compile Include="Controllers\FormulariosRGRL\RespuestasFormularioRelController.cs" />
+    <Compile Include="Controllers\Presentaciones\PresentacionesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ProveedorCuentaCorrienteController.cs" />
