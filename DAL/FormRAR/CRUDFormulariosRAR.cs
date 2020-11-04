@@ -79,7 +79,7 @@ namespace DAL.FormRAR
         public IList<FormulariosRAR> ConsultarEnProcesoCarga(int pInternoEstablecimiento)
         {
             return session.Query<FormulariosRAR>()
-                .Where(a => a.FechaPresentacion == null && a.InternoEstablecimiento == pInternoEstablecimiento)
+                .Where(a => a.InternoPresentacion == 0 && a.InternoEstablecimiento == pInternoEstablecimiento)
                 .ToList();
         }
         #endregion

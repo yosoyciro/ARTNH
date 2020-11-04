@@ -61,7 +61,7 @@ namespace DAL.Formularios
             try
             {
                 var establecimiento = session.Get<BE.Formularios.RefEstablecimiento>(pInternoEstablecimiento);
-                if (establecimiento != null && (establecimiento.CodLocalidadSRT != "" || establecimiento.CodLocalidadSRT != null))
+                if (establecimiento != null && (establecimiento.CodLocalidadSRT != "" && establecimiento.CodLocalidadSRT != null))
                 { 
                     var SRTLocalidad = session.Query<BE.Ref.SRTLocalidad>().
                         Where(l => l.Codigo == establecimiento.CodLocalidadSRT).

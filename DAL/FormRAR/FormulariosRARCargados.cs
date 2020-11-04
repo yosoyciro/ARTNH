@@ -15,11 +15,11 @@ namespace DAL.FormRAR
             session = SL.GenerarSesion.Instance.Session;
         }
 
-        public IList<BE.FormRAR.FormulariosRARCargados> ConsultarFormulariosRARCargados(double pCUIT)
+        public IList<BE.FormRAR.FormulariosRARCargados> ConsultarFormulariosRARCargados(double pCUIT, int pInternoPresentacion)
         {
             try
             {
-                return session.CreateSQLQuery("exec ConsultaFormulariosRAR @pCUIT = N'" + pCUIT + "'")
+                return session.CreateSQLQuery("exec ConsultaFormulariosRAR @pCUIT = N'" + pCUIT + "', @pInternoPresentacion = N'" + pInternoPresentacion + "'")
                     .AddScalar("Interno", NHibernateUtil.Int32)
                     .AddScalar("CUIT", NHibernateUtil.Double)
                     .AddScalar("RazonSocial", NHibernateUtil.String)

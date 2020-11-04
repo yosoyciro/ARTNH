@@ -572,5 +572,14 @@ namespace DAL.Formularios
             return respuestaFormulario.First();
         }
         #endregion
+
+        #region VerificarFormularioDuplicado
+        public BE.Formularios.RespuestasFormulario VerificarDuplicado(int pInternoEstablecimiento, int pInternoFormulario)
+        {
+            return session.Query<BE.Formularios.RespuestasFormulario>()
+                .Where(r => r.InternoPresentacion == 0 && r.InternoEstablecimiento == pInternoEstablecimiento)
+                .FirstOrDefault();
+        }
+        #endregion
     }
 }

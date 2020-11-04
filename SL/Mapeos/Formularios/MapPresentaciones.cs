@@ -23,7 +23,7 @@ namespace SL
             Property(p => p.Nombre);
             Property(p => p.Estado);
             Property(p => p.Tipo);
-            //Property(p => p.FechaHoraGeneracion);            
+            Property(p => p.FechaHoraGeneracion);            
         }
     }
 }

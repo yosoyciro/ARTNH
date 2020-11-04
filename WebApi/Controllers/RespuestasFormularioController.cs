@@ -152,5 +152,25 @@ namespace WebApi.Controllers
                 return Content(HttpStatusCode.InternalServerError, ex.InnerException.Message);
             }
         }
+
+        [HttpGet]
+        [Route("VerificarDuplicado")]
+        public IHttpActionResult VerificarDuplicado(int pInternoEstablecimiento, int pInternoFormulario)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Content(HttpStatusCode.BadRequest, ModelState); //BadRequest(ModelState);
+            }
+            try
+            {
+                //RespuestasFormulario
+                RespuestasFormulario respuestasFormulario = CRUDRespuestasFormulario.instancia.VerificarDuplicado(pInternoEstablecimiento, pInternoFormulario);
+                return Content(HttpStatusCode.OK, respuestasFormulario);
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError, ex.InnerException.Message);
+            }
+        }
     }
 }

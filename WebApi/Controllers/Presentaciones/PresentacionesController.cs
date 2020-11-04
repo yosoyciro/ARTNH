@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace WebApi.Controllers.Presentaciones
 {
@@ -12,16 +13,16 @@ namespace WebApi.Controllers.Presentaciones
     {
         [HttpGet]
         [Route("Listar")]
-        public IList<BE.Formularios.Presentaciones> Listar(double pCUIT)
+        public async Task<IEnumerable<BE.Formularios.Presentaciones>> Listar(double pCUIT, string pTipo)
         {
-            return DAL.Formularios.CRUDPresentaciones.instancia.Listar(pCUIT);
+            return await DAL.Formularios.CRUDPresentaciones.instancia.Listar(pCUIT, pTipo);
         }
 
         [HttpGet]
         [Route("VerificarPresentacion")]
-        public BE.Formularios.Presentaciones VerificarPresentacion(double pCUIT, string pTipo)
+        public bool VerificarPresentacion(double pCUIT, string pNombre, string pTipo)
         {
-            return DAL.Formularios.CRUDPresentaciones.instancia.VerificarPresentacion(pCUIT, pTipo);
+            return DAL.Formularios.CRUDPresentaciones.instancia.VerificarPresentacion(pCUIT, pNombre, pTipo);
         }
 
         [HttpGet]
@@ -33,9 +34,9 @@ namespace WebApi.Controllers.Presentaciones
 
         [HttpPost]
         [Route("Generar")]
-        public BE.Formularios.Presentaciones BuscarPorInternoOriginal(BE.Formularios.Presentaciones pPresentacion)
+        public async Task<BE.Formularios.Presentaciones> Generar(BE.Formularios.Presentaciones pPresentacion)
         {
-            return DAL.Formularios.CRUDPresentaciones.instancia.Generar(pPresentacion);
+            return await DAL.Formularios.CRUDPresentaciones.instancia.Generar(pPresentacion);
         }
     }
 }

@@ -4,7 +4,7 @@
   <session-factory name="Desarrollo">
     <!-- properties -->
     <property name="connection.connection_string">
-      Server=SVR-INTERNET\ART;initial catalog=Operativa;User Id=sa;Password=Binaria676
+      Server=SVR-INTERNET\ART;initial catalog=Operativa;User Id=sa;Password=Binaria676;MultipleActiveResultSets=True
     </property>
     <property name="show_sql">false</property>
     <property name="dialect">NHibernate.Dialect.MsSql2008Dialect</property>

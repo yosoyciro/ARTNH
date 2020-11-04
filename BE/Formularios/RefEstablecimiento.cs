@@ -29,5 +29,6 @@ namespace BE.Formularios
         public virtual string Provincia { get; set; }
         public virtual int Codigo { get; set; }
         public virtual int Numero { get; set; }
+        public virtual int CodEstabEmpresa { get; set; }
     }
 }

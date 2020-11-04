@@ -20,13 +20,19 @@ namespace DAL.Formularios
         }
         #endregion
 
-        public List<BE.Formularios.Presentaciones> Listar(double pCUIT)
+        public async Task<IEnumerable<BE.Formularios.Presentaciones>> Listar(double pCUIT, string pTipo)
         {
             session.Clear();
             try
             {
                 //Devuelvo las presentacions del CUIT o "Sin presentacion"
-                return session.Query<BE.Formularios.Presentaciones>().Where(a => a.CUIT == pCUIT || a.Interno == 0).ToList();
+                //return session.Query<BE.Formularios.Presentaciones>().Where(a => (a.Interno == 0 || (a.CUIT == pCUIT && a.Tipo == pTipo))).ToList();
+                IEnumerable<BE.Formularios.Presentaciones> presentaciones = await session
+                    .Query<BE.Formularios.Presentaciones>()
+                    .Where(a => (a.Interno == 0 || (a.CUIT == pCUIT && a.Tipo == pTipo)))
+                    .ToListAsync();
+
+                return presentaciones;
             }
 
             catch (Exception ex)
@@ -35,18 +41,30 @@ namespace DAL.Formularios
             }
         }
 
-        public BE.Formularios.Presentaciones VerificarPresentacion(double pCUIT, string pNombre)
+        public bool VerificarPresentacion(double pCUIT, string pNombre, string pTipo)
         {
             session.Clear();
+            BE.Formularios.Presentaciones presentacion;
             try
             {
-                //Devuelvo las presentacions del CUIT o "Sin presentacion"
-                return session.Query<BE.Formularios.Presentaciones>().FirstOrDefault(a => a.CUIT == pCUIT || a.Nombre == pNombre);
+                //Verifico si existe la presentacion
+                presentacion = session.Query<BE.Formularios.Presentaciones>()
+                    .FirstOrDefault(a => a.CUIT == pCUIT && a.Nombre == pNombre && a.Tipo == pTipo);
+                if (presentacion == null)
+                    return true;
+                else
+                    return false;
+
             }
 
             catch (Exception ex)
             {
                 throw ex;
+            }
+
+            finally 
+            { 
+                //presentacion.
             }
         }
 
@@ -56,19 +74,19 @@ namespace DAL.Formularios
 
             //Busco los establecimientos
             var establecimientos = session.Query<BE.Formularios.RefEstablecimiento>()
-                .Where(a => a.CUIT == pCUIT)
+                .Where(a => a.CUIT == pCUIT && a.BajaMotivo == 0)
                 .ToList();
 
             foreach (var item in establecimientos)
             {
-                //busco formularios sin presentacion para cada establecimiento
+                //busco formularios sin presentacion para cada establecimiento y completado
                 switch (pTipo)
                 {
                     case "R":
                         var formularioRGRL = session.Query<BE.Formularios.RespuestasFormulario>()
-                                .Where(a => a.InternoEstablecimiento == item.Interno && a.InternoPresentacion == 0)
+                                .Where(a => a.InternoEstablecimiento == item.Interno && a.InternoPresentacion == 0 && a.CompletadoFechaHora != null)
                                 .FirstOrDefault();
-                        if (formularioRGRL != null)
+                        if (formularioRGRL == null)
                         {
                             return false;
                         }
@@ -76,9 +94,9 @@ namespace DAL.Formularios
 
                     case "A":
                         var formularioRAR = session.Query<BE.FormRAR.FormulariosRAR>()
-                                .Where(a => a.InternoEstablecimiento == item.Interno && a.InternoPresentacion == 0)
+                                .Where(a => a.InternoEstablecimiento == item.Interno && a.InternoPresentacion == 0 && a.FechaPresentacion != null)
                                 .FirstOrDefault();
-                        if (formularioRAR != null)
+                        if (formularioRAR == null)
                         {
                             return false;
                         }
@@ -92,7 +110,8 @@ namespace DAL.Formularios
             return true;
         }
 
-        public BE.Formularios.Presentaciones Generar(BE.Formularios.Presentaciones pPresentacion)
+        #region GenerarPresentacion
+        public async Task<BE.Formularios.Presentaciones> Generar(BE.Formularios.Presentaciones pPresentacion)
         {
             ITransaction transaction = session.BeginTransaction();
             try
@@ -100,12 +119,13 @@ namespace DAL.Formularios
                 switch (pPresentacion.Interno)
                 {
                     case 0:
+                        pPresentacion.FechaHoraGeneracion = DateTime.Now;
                         session.Save(pPresentacion);
 
                         //Busco los establecimientos
-                        var establecimientos = session.Query<BE.Formularios.RefEstablecimiento>()
+                        var establecimientos = await session.Query<BE.Formularios.RefEstablecimiento>()
                             .Where(a => a.CUIT == pPresentacion.CUIT)
-                            .ToList();
+                            .ToListAsync();
 
 
                         foreach (var item in establecimientos)
@@ -149,6 +169,7 @@ namespace DAL.Formularios
                 
                 session.Flush();
                 transaction.Commit();
+                transaction.Dispose();
 
                 return pPresentacion;
             }
@@ -159,4 +180,5 @@ namespace DAL.Formularios
             }
         }
     }
+    #endregion
 }
