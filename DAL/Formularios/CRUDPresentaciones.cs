@@ -41,15 +41,15 @@ namespace DAL.Formularios
             }
         }
 
-        public bool VerificarPresentacion(double pCUIT, string pNombre, string pTipo)
+        public async Task<bool> VerificarPresentacion(double pCUIT, string pNombre, string pTipo)
         {
             session.Clear();
             BE.Formularios.Presentaciones presentacion;
             try
             {
                 //Verifico si existe la presentacion
-                presentacion = session.Query<BE.Formularios.Presentaciones>()
-                    .FirstOrDefault(a => a.CUIT == pCUIT && a.Nombre == pNombre && a.Tipo == pTipo);
+                presentacion = await session.Query<BE.Formularios.Presentaciones>()
+                    .FirstOrDefaultAsync(a => a.CUIT == pCUIT && a.Nombre == pNombre && a.Tipo == pTipo);
                 if (presentacion == null)
                     return true;
                 else
@@ -68,14 +68,14 @@ namespace DAL.Formularios
             }
         }
 
-        public bool VerificarCompletados(double pCUIT, string pTipo)
+        public async Task<bool> VerificarCompletados(double pCUIT, string pTipo)
         {
             session.Clear();
 
             //Busco los establecimientos
-            var establecimientos = session.Query<BE.Formularios.RefEstablecimiento>()
+            var establecimientos = await session.Query<BE.Formularios.RefEstablecimiento>()
                 .Where(a => a.CUIT == pCUIT && a.BajaMotivo == 0)
-                .ToList();
+                .ToListAsync();
 
             foreach (var item in establecimientos)
             {
@@ -83,9 +83,9 @@ namespace DAL.Formularios
                 switch (pTipo)
                 {
                     case "R":
-                        var formularioRGRL = session.Query<BE.Formularios.RespuestasFormulario>()
+                        var formularioRGRL = await session.Query<BE.Formularios.RespuestasFormulario>()
                                 .Where(a => a.InternoEstablecimiento == item.Interno && a.InternoPresentacion == 0 && a.CompletadoFechaHora != null)
-                                .FirstOrDefault();
+                                .FirstOrDefaultAsync();
                         if (formularioRGRL == null)
                         {
                             return false;
@@ -93,9 +93,9 @@ namespace DAL.Formularios
                         break;
 
                     case "A":
-                        var formularioRAR = session.Query<BE.FormRAR.FormulariosRAR>()
+                        var formularioRAR = await session.Query<BE.FormRAR.FormulariosRAR>()
                                 .Where(a => a.InternoEstablecimiento == item.Interno && a.InternoPresentacion == 0 && a.FechaPresentacion != null)
-                                .FirstOrDefault();
+                                .FirstOrDefaultAsync();
                         if (formularioRAR == null)
                         {
                             return false;
@@ -119,15 +119,15 @@ namespace DAL.Formularios
                 switch (pPresentacion.Interno)
                 {
                     case 0:
-                        pPresentacion.FechaHoraGeneracion = DateTime.Now;
-                        session.Save(pPresentacion);
-
                         //Busco los establecimientos
                         var establecimientos = await session.Query<BE.Formularios.RefEstablecimiento>()
-                            .Where(a => a.CUIT == pPresentacion.CUIT)
+                            .Where(a => a.CUIT == pPresentacion.CUIT && a.BajaMotivo == 0)
                             .ToListAsync();
 
-
+                        pPresentacion.FechaHoraGeneracion = DateTime.Now;
+                        pPresentacion.CantidadEstablecimientos = establecimientos.Count;
+                        session.Save(pPresentacion);
+                        
                         foreach (var item in establecimientos)
                         {
                             //Recorro todos los formularios del CUIT que no tengan presentacion y asigno el dato
@@ -135,9 +135,9 @@ namespace DAL.Formularios
                             {
                                 //Formularios RGRL
                                 case "R":
-                                    var formularioRGRL = session.Query<BE.Formularios.RespuestasFormulario>()
+                                    var formularioRGRL = await session.Query<BE.Formularios.RespuestasFormulario>()
                                         .Where(a => a.InternoEstablecimiento == item.Interno && a.InternoPresentacion == 0)
-                                        .FirstOrDefault();
+                                        .FirstOrDefaultAsync();
                                     if (formularioRGRL != null)
                                     {
                                         formularioRGRL.InternoPresentacion = pPresentacion.Interno;
@@ -147,9 +147,9 @@ namespace DAL.Formularios
 
                                 //RAR
                                 case "A":
-                                    var formularioRAR = session.Query<BE.FormRAR.FormulariosRAR>()
+                                    var formularioRAR = await session.Query<BE.FormRAR.FormulariosRAR>()
                                         .Where(a => a.InternoEstablecimiento == item.Interno && a.InternoPresentacion == 0)
-                                        .FirstOrDefault();
+                                        .FirstOrDefaultAsync();
                                     if (formularioRAR != null)
                                     {
                                         formularioRAR.InternoPresentacion = pPresentacion.Interno;

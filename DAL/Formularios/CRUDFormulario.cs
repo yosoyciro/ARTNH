@@ -57,7 +57,7 @@ namespace DAL.Formularios
                                 break;
 
                             default:
-                                item.Estado = "(Nueva instancia)";
+                                item.Estado = "(Nueva presentación)";
                                 break;
                         }
                     else

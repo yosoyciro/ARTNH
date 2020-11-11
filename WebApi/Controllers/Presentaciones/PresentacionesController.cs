@@ -20,14 +20,14 @@ namespace WebApi.Controllers.Presentaciones
 
         [HttpGet]
         [Route("VerificarPresentacion")]
-        public bool VerificarPresentacion(double pCUIT, string pNombre, string pTipo)
+        public Task<bool> VerificarPresentacion(double pCUIT, string pNombre, string pTipo)
         {
             return DAL.Formularios.CRUDPresentaciones.instancia.VerificarPresentacion(pCUIT, pNombre, pTipo);
         }
 
         [HttpGet]
         [Route("VerificarCompletados")]
-        public bool VerificarCompletados(double pCUIT, string pTipo)
+        public Task<bool> VerificarCompletados(double pCUIT, string pTipo)
         {
             return DAL.Formularios.CRUDPresentaciones.instancia.VerificarCompletados(pCUIT, pTipo);
         }

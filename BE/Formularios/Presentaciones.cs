@@ -14,5 +14,6 @@ namespace BE.Formularios
         public virtual string Estado { get; set; }
         public virtual string Tipo { get; set; }
         public virtual System.DateTime? FechaHoraGeneracion { get; set; }
+        public virtual int CantidadEstablecimientos { get; set; }
     }
 }
