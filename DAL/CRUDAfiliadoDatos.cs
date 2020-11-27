@@ -99,9 +99,9 @@ namespace DAL
                     else
                         afiliadoDatos.Empresa = "Sin Empresa";
 
-                    var polizaCabecera = session.Query<BE.PolizaCabecera>().OrderByDescending(a => a.Interno).FirstOrDefault(b => b.EmpleadorCUIT == referenteDatos.CUIT);
-                    if (polizaCabecera != null)
-                        afiliadoDatos.NroContrato = polizaCabecera.Interno;                    
+                    var refEmpleador = session.Query<BE.Ref.RefEmpleador>().FirstOrDefault(r => r.CUIT == referenteDatos.CUIT);
+                    if (refEmpleador != null)
+                        afiliadoDatos.NroContrato = refEmpleador.ContratoNro;
                 }
 
                 
