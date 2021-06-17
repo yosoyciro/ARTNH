@@ -108,7 +108,7 @@ namespace SL
                             break;
 
                         case "Test":
-                            cfg.Configure("/inetpub/wwwroot/ARTApi/bin/Config/hibernate.cfg.xml");
+                            cfg.Configure("/inetpub/Sitios/ARTApi/bin/Config/hibernate.cfg.xml");
                             break;
 
                         case "Produccion":

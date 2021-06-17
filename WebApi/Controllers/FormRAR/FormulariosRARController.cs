@@ -71,5 +71,25 @@ namespace WebApi.Controllers.FormRAR
             }
 
         }
+
+        [HttpPost]
+        [Route("Borrar")]
+        public IHttpActionResult BorrarFormularioRAR(FormulariosRAR pFormulariosRAR)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Content(HttpStatusCode.BadRequest, ModelState); //BadRequest(ModelState);
+            }
+            try
+            {
+                bool ret = CRUDFormulariosRAR.instancia.Borrar(pFormulariosRAR);
+                return Content(HttpStatusCode.OK, ret);
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError, ex.InnerException.InnerException);
+            }
+
+        }
     }
 }

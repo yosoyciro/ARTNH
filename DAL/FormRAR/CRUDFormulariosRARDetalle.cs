@@ -4,7 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BE.FormRAR;
+using BE.Ref;
 using NHibernate;
+using NHibernate.Engine;
+using NHibernate.Hql.Ast.ANTLR;
+using NHibernate.Linq;
 
 namespace DAL.FormRAR
 {
@@ -75,9 +79,19 @@ namespace DAL.FormRAR
         #endregion
 
         #region Consultar
-        public IList<FormulariosRARDetalle> Consultar(int pInternoFormulariosRAR)
+        public async Task<IList<FormulariosRARDetalle>> Consultar(int pInternoFormulariosRAR)
         {
-            return session.Query<FormulariosRARDetalle>().Where(a => a.InternoFormulariosRAR == pInternoFormulariosRAR).OrderBy(b => b.Nombre).ToList();
+            var formularioRARDetalle = await session.Query<FormulariosRARDetalle>().Where(a => a.InternoFormulariosRAR == pInternoFormulariosRAR).OrderBy(b => b.Nombre).ToListAsync();
+
+            foreach (var item in formularioRARDetalle)
+            {
+                var agenteCausante = await session.Query<SRTSiniestralidadAgenteCausante>().Where(b => b.Codigo == item.CodigoAgente).FirstOrDefaultAsync();
+
+                
+                item.AgenteCausante = agenteCausante;
+
+            }
+            return formularioRARDetalle;
         }
         #endregion
     }

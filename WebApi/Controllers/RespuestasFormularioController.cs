@@ -172,5 +172,25 @@ namespace WebApi.Controllers
                 return Content(HttpStatusCode.InternalServerError, ex.InnerException.Message);
             }
         }
+
+        [HttpPost]
+        [Route("BorrarFormulario")]
+        public IHttpActionResult BorrarFormulario(int pInternoRespuestaFormulario)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Content(HttpStatusCode.BadRequest, ModelState); //BadRequest(ModelState);
+            }
+            try
+            {
+                //RespuestasFormulario
+                bool ret = CRUDRespuestasFormulario.instancia.Borrar(pInternoRespuestaFormulario);
+                return Content(HttpStatusCode.OK, ret);
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError, ex.InnerException.Message);
+            }
+        }
     }
 }

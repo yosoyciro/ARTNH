@@ -87,6 +87,7 @@
     <Compile Include="PrestadorDatos.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Formularios\Secciones.cs" />
+    <Compile Include="Ref\RefAgenteCausante.cs" />
     <Compile Include="Ref\RefEmpleador.cs" />
     <Compile Include="Ref\RefPais.cs" />
     <Compile Include="Ref\SRTLocalidad.cs" />

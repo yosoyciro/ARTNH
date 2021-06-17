@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BE.Ref;
 
 namespace BE.FormRAR
 {
@@ -21,5 +22,6 @@ namespace BE.FormRAR
         public virtual byte HorasExposicion { get; set; }
         public virtual System.DateTime? FechaUltimoExamenMedico { get; set; }
         public virtual int CodigoAgente { get; set; }
+        public virtual SRTSiniestralidadAgenteCausante AgenteCausante { get; set; }
     }
 }

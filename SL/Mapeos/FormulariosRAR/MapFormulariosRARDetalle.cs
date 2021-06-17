@@ -21,6 +21,15 @@ namespace SL
             Property(p => p.HorasExposicion);
             Property(p => p.FechaUltimoExamenMedico);
             Property(p => p.CodigoAgente);
+            //ManyToOne(formRARDetalle => formRARDetalle.AgenteCausante, map =>
+            //{
+            //    map.Column("Codigo");
+            //    map.Class(typeof(BE.Ref.SRTSiniestralidadAgenteCausante));
+            //    map.Fetch(FetchKind.Select);
+            //    map.UniqueKey("CodigoAgente");
+            //    map.Lazy(LazyRelation.NoLazy);
+            //    map.NotFound(NotFoundMode.Ignore);
+            //});
         }
     }
 }

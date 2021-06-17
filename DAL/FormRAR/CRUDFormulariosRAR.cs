@@ -60,6 +60,10 @@ namespace DAL.FormRAR
                 nuevoFormulariosRAR = session.Get<FormulariosRAR>(pFormulariosRAR.Interno);
                 if (nuevoFormulariosRAR != null)
                 {
+                    session.CreateQuery("DELETE FROM FormulariosRARDetalle WHERE InternoFormulariosRAR = :id")
+                    .SetParameter("id", pFormulariosRAR.Interno)
+                    .ExecuteUpdate();
+
                     session.Delete(nuevoFormulariosRAR);
                     transaction.Commit();
                 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using BE.FormRAR;
 using DAL.FormRAR;
@@ -54,7 +55,7 @@ namespace WebApi.Controllers.FormRAR
 
         [HttpGet]
         [Route("Consultar")]
-        public IHttpActionResult ConsultarFormularioRARDetalle(int pInternoFormularioRAR)
+        public async Task<IHttpActionResult> ConsultarFormularioRARDetalle(int pInternoFormularioRAR)
         {
             if (!ModelState.IsValid)
             {
@@ -62,7 +63,7 @@ namespace WebApi.Controllers.FormRAR
             }
             try
             {
-                IList<FormulariosRARDetalle> formulariosRARDetalle = CRUDFormulariosRARDetalle.instancia.Consultar(pInternoFormularioRAR);
+                IList<FormulariosRARDetalle> formulariosRARDetalle = await CRUDFormulariosRARDetalle.instancia.Consultar(pInternoFormularioRAR);
                 return Content(HttpStatusCode.OK, formulariosRARDetalle);
             }
             catch (Exception ex)

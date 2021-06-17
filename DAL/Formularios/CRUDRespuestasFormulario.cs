@@ -107,6 +107,53 @@ namespace DAL.Formularios
         }
         #endregion
 
+        #region MetodoBorrar
+        public bool Borrar(int pInternoRespuestasFormulario)
+        {
+            ITransaction transaction = session.BeginTransaction();
+            try
+            {                
+                var respuestaFormulario = session.Get<BE.Formularios.RespuestasFormulario>(pInternoRespuestasFormulario);
+                if (respuestaFormulario == null)
+                    return false;
+                else
+                {
+                    //Respuestas
+                    session.CreateQuery("DELETE FROM RespuestasCuestionario WHERE InternoRespuestaFormulario = :id")
+                    .SetParameter("id", pInternoRespuestasFormulario)
+                    .ExecuteUpdate();
+
+                    //Gremios 
+                    session.CreateQuery("DELETE FROM RespuestasGremio WHERE InternoRespuestaFormulario = :id")
+                    .SetParameter("id", pInternoRespuestasFormulario)
+                    .ExecuteUpdate();
+
+                    //Contratistas
+                    session.CreateQuery("DELETE FROM RespuestasContratista WHERE InternoRespuestaFormulario = :id")
+                    .SetParameter("id", pInternoRespuestasFormulario)
+                    .ExecuteUpdate();
+
+                    //Responsables
+                    session.CreateQuery("DELETE FROM RespuestasResponsable WHERE InternoRespuestaFormulario = :id")
+                    .SetParameter("id", pInternoRespuestasFormulario)
+                    .ExecuteUpdate();
+
+                    session.Delete(respuestaFormulario);
+                }
+
+                session.Flush();
+                transaction.Commit();
+                return true;
+            }
+
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw ex;
+            }
+        }
+        #endregion
+
         #region TraerRespuestas
         public BE.Formularios.RespuestasFormulario TraerRespuestas(int pInternoRespuestasFormulario)
         {
