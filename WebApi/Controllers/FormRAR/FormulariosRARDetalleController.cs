@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web.Http.Cors;
 using System.Threading.Tasks;
 using System.Web.Http;
 using BE.FormRAR;
@@ -10,6 +11,7 @@ using DAL.FormRAR;
 
 namespace WebApi.Controllers.FormRAR
 {
+    //[EnableCors(origins: "http://www.intersistemas.net:9090", headers: "*", methods: "*")]
     [RoutePrefix("api/FormulariosRARDetalle")]
     public class FormulariosRARDetalleController : ApiController
     {
