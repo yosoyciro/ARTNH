@@ -23,14 +23,30 @@ namespace DAL.Formularios
         public async Task<IEnumerable<BE.Formularios.Presentaciones>> Listar(double pCUIT, string pTipo)
         {
             session.Clear();
+            IEnumerable<BE.Formularios.Presentaciones> presentaciones = null;
+
             try
             {
                 //Devuelvo las presentacions del CUIT o "Sin presentacion"
-                //return session.Query<BE.Formularios.Presentaciones>().Where(a => (a.Interno == 0 || (a.CUIT == pCUIT && a.Tipo == pTipo))).ToList();
-                IEnumerable<BE.Formularios.Presentaciones> presentaciones = await session
-                    .Query<BE.Formularios.Presentaciones>()
-                    .Where(a => (a.Interno == 0 || (a.CUIT == pCUIT && a.Tipo == pTipo)))
-                    .ToListAsync();
+                switch (pCUIT)
+                {
+                    case 99999999999:
+                        //return session.Query<BE.Formularios.Presentaciones>().Where(a => (a.Interno == 0 || (a.CUIT == pCUIT && a.Tipo == pTipo))).ToList();
+                        presentaciones = await session
+                            .Query<BE.Formularios.Presentaciones>()
+                            .Where(a => (a.Interno == 0 || (a.Tipo == pTipo)))
+                            .ToListAsync();
+                        break;
+
+                    default:
+                        //return session.Query<BE.Formularios.Presentaciones>().Where(a => (a.Interno == 0 || (a.CUIT == pCUIT && a.Tipo == pTipo))).ToList();
+                        presentaciones = await session
+                            .Query<BE.Formularios.Presentaciones>()
+                            .Where(a => (a.Interno == 0 || (a.CUIT == pCUIT && a.Tipo == pTipo)))
+                            .ToListAsync();
+                        break;
+                }
+                
 
                 return presentaciones;
             }
