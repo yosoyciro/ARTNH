@@ -22,7 +22,6 @@ namespace BE.FormRAR
         public virtual byte HorasExposicion { get; set; }
         public virtual System.DateTime? FechaUltimoExamenMedico { get; set; }
         public virtual int CodigoAgente { get; set; }
-        public virtual string DescripcionAgente { get; set; }
-        //public virtual SRTSiniestralidadAgenteCausante AgenteCausante { get; set; }
+        public virtual SRTSiniestralidadAgenteCausante AgenteCausante { get; set; }
     }
 }

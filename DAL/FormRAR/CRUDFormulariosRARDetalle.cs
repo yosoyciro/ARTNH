@@ -82,14 +82,14 @@ namespace DAL.FormRAR
         public async Task<IList<FormulariosRARDetalle>> Consultar(int pInternoFormulariosRAR)
         {
             var formularioRARDetalle = await session.Query<FormulariosRARDetalle>().Where(a => a.InternoFormulariosRAR == pInternoFormulariosRAR).OrderBy(b => b.Nombre).ToListAsync();
-            var agentes = await session.Query<SRTSiniestralidadAgenteCausante>().ToListAsync();
 
             foreach (var item in formularioRARDetalle)
             {
-                var agenteCausante = session.Query<SRTSiniestralidadAgenteCausante>().Where(b => b.Codigo == item.CodigoAgente).FirstOrDefault();
+                var agenteCausante = await session.Query<SRTSiniestralidadAgenteCausante>().Where(b => b.Codigo == item.CodigoAgente).FirstOrDefaultAsync();
 
                 
-                item.DescripcionAgente = agenteCausante.Descripcion;
+                item.AgenteCausante = agenteCausante;
+
             }
             return formularioRARDetalle;
         }
